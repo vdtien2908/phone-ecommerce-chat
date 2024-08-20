@@ -1,0 +1,322 @@
+<?php
+class UsersController extends BaseController
+{
+
+    private $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = $this->model('UserModel');
+    }
+
+    public function index()
+    {
+        $this->view(
+            'app',
+            [
+                'page' => 'users/index',
+                'title' => 'Khách hàng',
+            ]
+        );
+    }
+
+    public function all()
+    {
+        $users = $this->userModel->getUsers();
+
+        $result = [
+            'status' => 200,
+            'data' => $users
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+
+    public function create()
+    {
+        $this->view(
+            'app',
+            [
+                'page' => 'users/create',
+                'title' => 'Khach hang'
+            ]
+        );
+    }
+
+    public function store()
+    {
+        try {
+            $fullname = $_POST['fullname'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+            $address = isset($_POST['address']) ? $_POST['address'] : '';
+            $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
+            $role = isset($_POST['role']) ? $_POST['role'] : 'user';
+
+            if (!$fullname || !$email || !$password || !$gender) {
+                $result = [
+                    'status' => 500,
+                    'message' => 'Thiếu thông tin bắt buộc',
+                ];
+
+                header('Content-Type: application/json');
+                echo json_encode($result);
+                return;
+            }
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                $allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $fileName = md5(uniqid()) . basename($_FILES['image']['name']);
+
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], '../storages/public/users_images/' . $fileName)) {
+                    } else {
+                        // Xử lý lỗi lưu trữ hình ảnh
+                        $_SESSION['errors']['fullname'] = 'Không thể tải lên hình ảnh';
+                        header('Location: /phone-ecommerce-chat/admin/users/create');
+                    }
+                } else {
+                    // Xử lý lỗi định dạng hình ảnh không hợp lệ
+                    $_SESSION['errors']['fullname'] = 'Định dạng hình ảnh không hợp lệ';
+                    exit();
+                }
+            }
+
+            $data = [
+                'fullname' => $fullname,
+                'email' => $email,
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'gender' => $gender,
+                'address' => $address,
+                'phone' => $phone,
+                'role' => $role,
+                'image' => 'users_images/' . $fileName,
+            ];
+
+            $this->userModel->createUser($data);
+
+            $result = [
+                'status' => 200,
+                'message' => 'Nhân viên đã được tạo thành công'
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        } catch (\Throwable $th) {
+            $result = [
+                'status' => 500,
+                'message' => $th->getMessage(),
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        }
+    }
+
+    public function edit($id)
+    {
+        $user = $this->userModel->getUser($id);
+
+        if (!$user) {
+            $_SESSION['success'] = 'Không tìm thấy nhân viên';
+            header('Location: /phone-ecommerce-chat/admin/users');
+        }
+
+        $this->view(
+            'app',
+            [
+                'page' => 'users/edit',
+                'user' => $user,
+            ]
+        );
+    }
+
+    public function update($id)
+    {
+        try {
+            $fullname = $_POST['fullname'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+            $address = isset($_POST['address']) ? $_POST['address'] : '';
+            $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
+            $role = $_POST['role'];
+
+            if (!$fullname || !$email) {
+                $_SESSION['errors']['fullname'] = 'Thiếu thông tin bắt buộc';
+                header('Location: /phone-ecommerce-chat/admin/users/create');
+                exit();
+            }
+
+            $fileName = '';
+            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                $allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $fileName = md5(uniqid()) . basename($_FILES['image']['name']);
+
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], '../storages/public/users_images/' . $fileName)) {
+                    } else {
+                        $_SESSION['errors']['fullname'] = 'Không thể tải lên hình ảnh';
+                        header('Location: /phone-ecommerce-chat/admin/users/create');
+                    }
+                } else {
+                    $_SESSION['errors']['fullname'] = 'Định dạng hình ảnh không hợp lệ';
+                    exit();
+                }
+            }
+
+            $oldFileName = null;
+            $user = $this->userModel->getUser($id);
+            if (empty($fileName)) {
+                $oldFileName = $user['image'];
+            }
+
+            $data = [
+                'fullname' => $fullname,
+                'email' => $email,
+                'password' => $password == "" ? $user['password'] : password_hash($password, PASSWORD_DEFAULT),
+                'gender' => $gender,
+                'address' => $address,
+                'phone' => $phone,
+                'role' => $role,
+                'image' => $oldFileName != null ? $oldFileName : 'users_images/' . $fileName,
+            ];
+
+            $this->userModel->updateUser($id, $data);
+
+            $result = [
+                'status' => 200,
+                'message' => 'Cập nhật tài khoản thành công'
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        } catch (\Throwable $th) {
+            $result = [
+                'status' => 200,
+                'message' => $th->getMessage(),
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        }
+    }
+
+    public function updateProfile($id)
+    {
+        try {
+            $fullname = $_POST['fullname'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $role = $_POST['role'];
+            $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+            $address = isset($_POST['address']) ? $_POST['address'] : '';
+            $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
+
+            if (!$fullname || !$email) {
+                $result = [
+                    'status' => 200,
+                    'message' => 'Thiếu thông tin bắt buộc',
+                ];
+
+                header('Content-Type: application/json');
+                echo json_encode($result);
+                return;;
+            }
+
+            $fileName = '';
+            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                $allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $fileName = md5(uniqid()) . basename($_FILES['image']['name']);
+
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], '../storages/public/users_images/' . $fileName)) {
+                    } else {
+                        $_SESSION['errors']['fullname'] = 'Không thể tải lên hình ảnh';
+                        header('Location: /phone-ecommerce-chat/admin/users/create');
+                    }
+                } else {
+                    $_SESSION['errors']['fullname'] = 'Định dạng hình ảnh không hợp lệ';
+                    exit();
+                }
+            }
+
+            $oldFileName = null;
+            $user = $this->userModel->getUser($id);
+            if (empty($fileName)) {
+                $oldFileName = $user['image'];
+            }
+
+            $data = [
+                'fullname' => $fullname,
+                'email' => $email,
+                'password' => $password == "" ? $user['password'] : password_hash($password, PASSWORD_DEFAULT),
+                'gender' => $gender,
+                'address' => $address,
+                'phone' => $phone,
+                'role' => $role,
+                'image' => $oldFileName != null ? $oldFileName : 'users_images/' . $fileName,
+            ];
+
+            $this->userModel->updateUser($id, $data);
+
+            $result = [
+                'status' => 200,
+                'message' => 'Cập nhật tài khoản thành công'
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        } catch (\Throwable $th) {
+            $result = [
+                'status' => 200,
+                'message' => $th->getMessage(),
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $user = $this->userModel->getUser($id);
+
+            if (!$user) {
+                $result = [
+                    'status' => 404,
+                    'message' => 'Không tìm thấy nhân viên'
+                ];
+                header('Content-Type: application/json');
+                echo json_encode($result);
+                return;
+            }
+
+            $this->userModel->deleteUser($id);
+
+            $result = [
+                'status' => 204,
+                'message' => "Xóa nhân viên thành công"
+            ];
+
+            header('Location: /phone-ecommerce-chat/admin/users');
+
+            // header('Content-Type: application/json');
+            // echo json_encode($result);
+        } catch (\Throwable $th) {
+            $result = [
+                'status' => 500,
+                'message' => $th->getMessage(),
+            ];
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        }
+    }
+}
