@@ -20,7 +20,7 @@
                             <div class="mb-3">
                                 <label for="email">Email</label>
                                 <div class="">
-                                    <input id="email" name="email" type="email" value="<?php echo $_SESSION['auth']['email'] ?>" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                                    <input id="email" name="email" type="email" value="<?php echo $_SESSION['auth_admin']['email'] ?>" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
                                 </div>
                             </div>
                             <div class="mb-3">

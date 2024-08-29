@@ -56,7 +56,7 @@ class AuthController extends BaseController
      */
     public function forgotpassword()
     {
-        if (!isset($_SESSION['auth'])) {
+        if (!isset($_SESSION['auth_admin'])) {
             header('Location: /phone-ecommerce-chat/admin/auth/login');
             return;
         }
@@ -79,8 +79,8 @@ class AuthController extends BaseController
         if ($result) {
             if (password_verify($pass, $result['password'])) {
                 // if ($pass == $result['password']) {
-                $_SESSION['auth'] = $result;
-                $_SESSION['authenticated'] = true;
+                $_SESSION['auth_admin'] = $result;
+                $_SESSION['authenticated_admin'] = true;
 
                 $result = [
                     'status' => 200,
@@ -183,7 +183,7 @@ class AuthController extends BaseController
         try {
             $email = $_POST['email'];
             $pass = $_POST['password'];
-            $id = $_SESSION['auth']['customer_id'];
+            $id = $_SESSION['auth_admin']['customer_id'];
 
             $result = $this->customerModel->findEmail($email);
 
@@ -195,8 +195,8 @@ class AuthController extends BaseController
 
                 $this->customerModel->updateCustomer($id, $data);
 
-                $_SESSION['auth'] = null;
-                $_SESSION['authenticated'] = false;
+                $_SESSION['auth_admin'] = null;
+                $_SESSION['authenticated_admin'] = false;
 
 
                 $result = [
@@ -231,9 +231,9 @@ class AuthController extends BaseController
      */
     public function logout()
     {
-        if ($_SESSION['auth']) {
-            unset($_SESSION['auth']);
-            unset($_SESSION['authenticated']);
+        if ($_SESSION['auth_admin']) {
+            unset($_SESSION['auth_admin']);
+            unset($_SESSION['authenticated_admin']);
             header('Location: /phone-ecommerce-chat/admin/auth/login');
         }
     }

@@ -50,7 +50,7 @@
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
-  <?php if (isset($_SESSION['authenticated']) && $_SESSION['authenticated']) : ?>
+  <?php if (isset($_SESSION['authenticated_admin']) && $_SESSION['authenticated_admin']) : ?>
     <?php include(__DIR__ . '/user_types/auth.php'); ?>
   <?php else : ?>
     <?php include(__DIR__ . '/user_types/guest.php'); ?>

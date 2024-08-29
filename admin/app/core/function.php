@@ -31,8 +31,12 @@ class Func
 
     function setRootPath()
     {
-        define('SCRIPT_ROOT', 'http://localhost/phone-ecommerce-chat/admin/public');
-        define('IMAGES_PATH', 'http://localhost/phone-ecommerce-chat/storages/public');
-        define('URL_APP', 'http://localhost/phone-ecommerce-chat/admin');
+        // Config root folder
+        $folder_root = 'phone-ecommerce-chat';
+
+        define('FOLDER_ROOT','/'. $folder_root);
+        define('SCRIPT_ROOT', 'http://localhost/'.$folder_root.'/admin/public');
+        define('IMAGES_PATH', 'http://localhost/'.$folder_root.'/storages/public');
+        define('URL_APP', 'http://localhost/'.$folder_root.'/admin');
     }
 }

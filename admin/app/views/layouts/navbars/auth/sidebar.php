@@ -1,13 +1,14 @@
 <?php
 
-$dashboardUrl = '/phone-ecommerce-chat/admin/home';
-$userProfileUrl = '/phone-ecommerce-chat/admin/profile';
-$usersManagementUrl = '/phone-ecommerce-chat/admin/users';
-$categoriesManagementUrl = '/phone-ecommerce-chat/admin/categories';
-$productsManagementUrl = '/phone-ecommerce-chat/admin/products';
-$customersManagementUrl = '/phone-ecommerce-chat/admin/customers';
-$ordersManagementUrl = '/phone-ecommerce-chat/admin/orders';
-$conversationUrl = '/phone-ecommerce-chat/admin/conversation';
+
+$dashboardUrl = FOLDER_ROOT . '/admin/home';
+$userProfileUrl = FOLDER_ROOT . '/admin/profile';
+$usersManagementUrl = FOLDER_ROOT . '/admin/users';
+$categoriesManagementUrl = FOLDER_ROOT . '/admin/categories';
+$productsManagementUrl = FOLDER_ROOT . '/admin/products';
+$customersManagementUrl = FOLDER_ROOT . '/admin/customers';
+$ordersManagementUrl = FOLDER_ROOT . '/admin/orders';
+$conversationUrl = FOLDER_ROOT . '/admin/conversation';
 
 // Kiểm tra URL hiện tại để xác định link nào đang active
 $currentUrl = $_SERVER['REQUEST_URI'];
@@ -16,7 +17,7 @@ $currentUrl = $_SERVER['REQUEST_URI'];
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
   <div class="sidenav-header">
     <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-    <a class="align-items-center d-flex m-0 navbar-brand text-wrap" href="/dashboard}">
+    <a class="align-items-center d-flex m-0 navbar-brand text-wrap" href="<?php echo $dashboardUrl ?>">
       <img src="<?php echo SCRIPT_ROOT; ?> /assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="...">
       <span class="ms-3 font-weight-bold">Augentern Shop <br>DASHBOARD</span>
     </a>
@@ -24,7 +25,7 @@ $currentUrl = $_SERVER['REQUEST_URI'];
   <hr class="horizontal dark mt-0">
   <div class="collapse navbar-collapse w-auto h-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
-      <?php if ($_SESSION['auth']['role'] == 'admin') : ?>
+      <?php if ($_SESSION['auth_admin']['role'] == 'admin') : ?>
         <li class="nav-item">
           <a class="nav-link <?php echo ($currentUrl == $dashboardUrl ? 'active' : ''); ?>" href="<?php echo $dashboardUrl; ?>">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -139,7 +140,7 @@ $currentUrl = $_SERVER['REQUEST_URI'];
           </a>
         </li>
         <li class="nav-item mt-2">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Admin <?php echo $_SESSION['auth']['role']; ?></h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Admin <?php echo $_SESSION['auth_admin']['role']; ?></h6>
         </li>
         <li class="nav-item">
           <a class="nav-link <?php echo ($currentUrl == $userProfileUrl ? 'active' : ''); ?>" href="<?php echo $userProfileUrl; ?>">

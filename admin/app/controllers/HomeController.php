@@ -21,7 +21,7 @@ class HomeController extends BaseController
     }
 
     /**
-     * Phương thức index kiểm tra xem người dùng đã đăng nhập hay chưa thông qua biến $_SESSION['auth'].
+     * Phương thức index kiểm tra xem người dùng đã đăng nhập hay chưa thông qua biến $_SESSION['auth_admin'].
      * Nếu chưa đăng nhập, người dùng sẽ được chuyển hướng tới trang đăng nhập.
      * Lấy dữ liệu thống kê từ các mô hình:
      * getRevenueToday: lấy doanh thu hôm nay.
@@ -33,7 +33,7 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        if (!isset($_SESSION['auth'])) {
+        if (!isset($_SESSION['auth_admin'])) {
             header('Location: /phone-ecommerce-chat/customer/auth/login');
             return;
         }
