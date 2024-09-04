@@ -125,4 +125,36 @@ class ProductModel extends BaseModel
         $sql = "UPDATE products SET quantity = quantity - ${quantityToDeduct} WHERE product_id = ${productId}";
         return $this->querySql($sql);
     }
+
+    // Lấy danh sách đánh giá sản phẩm
+    public function getProductReviews($productId)
+    {
+        $sql = "SELECT * FROM product_reviews WHERE product_id = ${productId} ORDER BY created_at DESC";
+        $result = $this->querySql($sql);
+        if ($result) {
+            return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        }
+        return [];
+    }
+
+    // Thêm đánh giá sản phẩm mới
+    public function addProductReview($productId, $email, $content, $rate)
+    {
+        $sql = "INSERT INTO product_reviews (product_id, email, content, rate) VALUES (${productId}, '${email}', '${content}', ${rate})";
+        return $this->querySql($sql);
+    }
+
+    // Cập nhật đánh giá sản phẩm
+    public function updateProductReview($reviewId, $content, $rate)
+    {
+        $sql = "UPDATE product_reviews SET content = '${content}', rate = ${rate} WHERE product_review_id = ${reviewId}";
+        return $this->querySql($sql);
+    }
+
+    // Xóa đánh giá sản phẩm
+    public function deleteProductReview($reviewId)
+    {
+        $sql = "DELETE FROM product_reviews WHERE product_review_id = ${reviewId}";
+        return $this->querySql($sql);
+    }
 }

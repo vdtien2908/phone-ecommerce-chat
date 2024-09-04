@@ -62,6 +62,7 @@ class ShopController extends BaseController
     public function showProductDetailData($id)
     {
         $product = $this->productModel->getProduct($id);
+        $reviews = $this->productModel->getProductReviews($id);
 
         if (!$product) {
             $result = [
@@ -78,6 +79,7 @@ class ShopController extends BaseController
             'status' => 200,
             'message' => "success",
             'data' => $product,
+            'reviews' => $reviews,
         ];
 
         header('Content-Type: application/json');
@@ -149,5 +151,106 @@ class ShopController extends BaseController
             'message' => 'Filtered products by price successfully',
             'data' => $products
         ]);
+    }
+
+    // Lấy danh sách đánh giá sản phẩm
+    public function getProductReviews($productId)
+    {
+        $reviews = $this->productModel->getProductReviews($productId);
+
+        $result = [
+            'status' => 200,
+            'message' => "Lấy danh sách đánh giá thành công",
+            'data' => $reviews,
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+
+    // Thêm đánh giá sản phẩm mới
+    public function addProductReview()
+    {
+        $productId = $_POST['product_id'] ?? null;
+        $email = $_POST['email'] ?? null;
+        $content = $_POST['content'] ?? null;
+        $rate = $_POST['rate'] ?? null;
+
+        if (!$productId || !$email || !$content || !$rate) {
+            $result = [
+                'status' => 400,
+                'message' => "Thiếu thông tin đánh giá",
+            ];
+        } else {
+            $success = $this->productModel->addProductReview($productId, $email, $content, $rate);
+            
+            if ($success) {
+                $result = [
+                    'status' => 201,
+                    'message' => "Thêm đánh giá thành công",
+                ];
+            } else {
+                $result = [
+                    'status' => 500,
+                    'message' => "Lỗi khi thêm đánh giá",
+                ];
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+
+    // Cập nhật đánh giá sản phẩm
+    public function updateProductReview()
+    {
+        $reviewId = $_POST['review_id'] ?? null;
+        $content = $_POST['content'] ?? null;
+        $rate = $_POST['rate'] ?? null;
+
+        if (!$reviewId || !$content || !$rate) {
+            $result = [
+                'status' => 400,
+                'message' => "Thiếu thông tin cập nhật đánh giá",
+            ];
+        } else {
+            $success = $this->productModel->updateProductReview($reviewId, $content, $rate);
+            
+            if ($success) {
+                $result = [
+                    'status' => 200,
+                    'message' => "Cập nhật đánh giá thành công",
+                ];
+            } else {
+                $result = [
+                    'status' => 500,
+                    'message' => "Lỗi khi cập nhật đánh giá",
+                ];
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+
+    // Xóa đánh giá sản phẩm
+    public function deleteProductReview($reviewId)
+    {
+        $success = $this->productModel->deleteProductReview($reviewId);
+
+        if ($success) {
+            $result = [
+                'status' => 200,
+                'message' => "Xóa đánh giá thành công",
+            ];
+        } else {
+            $result = [
+                'status' => 500,
+                'message' => "Lỗi khi xóa đánh giá",
+            ];
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
     }
 }

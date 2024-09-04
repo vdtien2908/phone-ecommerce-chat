@@ -67,8 +67,7 @@
             method: 'GET',
             dataType: 'json',
             success: function(res) {
-                console.log(res);
-                renderProductDetail(res.data);
+                renderProductDetail(res.data, res.reviews);
             },
             error: function(error) {
                 console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
@@ -76,7 +75,9 @@
         });
     }
 
-    const renderProductDetail = (product) => {
+    const renderProductDetail = (product, product_reviews) => {
+        console.log(product);
+        console.log(product_reviews);
         const productDetailHtml = `
             <div class="row">
                 <div class="col-lg-6">
@@ -95,7 +96,7 @@
                         <i class="fa fa-star"></i>
                         <span>( 138 reviews )</span>
                     </div>
-                    <div class="product__details__price">${formatPrice(product.price)} VND <span>${formatPrice(Number(product.price + 250000))} VND</span></div>
+                    <div class="product__details__price">${formatPrice(product.price)} <span>${formatPrice(Number(product.price )+ 450000)}</span></div>
                     <p>${product.description.substring(0, 250)}...</p>
                     <div class="product__details__button">
                     <div class="quantity">
@@ -110,10 +111,7 @@
                     <button type="button" class="addCartButton cart-btn outline-none" style="${parseInt(product.quantity) === 0 ? 'pointer-events: none;' : ''}">
                         <span class="icon_bag_alt mr-2"></span>${parseInt(product.quantity) === 0 ? "Đã hết hàng" : "Thêm vào giỏ hàng"}
                     </button>
-                    <ul>
-                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                        <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
-                    </ul>
+                   
                     </div>
                     <div class="product__details__widget">
                         <ul>
@@ -136,10 +134,7 @@
                         <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Mô tả</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
+                        <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Đánh giá</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -147,13 +142,27 @@
                         <h6>Mô tả</h6>
                         <p>${product.description}.</p>
                         </div>
-                        <div class="tab-pane" id="tabs-2" role="tabpanel">
-                        <h6>Chỉ định</h6>
-                        <p>${product.description}.</p>
-                        </div>
+                      
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
-                        <h6>Đánh giá ( 200 )</h6>
-                        <p>${product.description}.</p>
+                            <h6>Đánh giá sản phẩm</h6>
+                            <div id="product-reviews">
+                                ${product_reviews && product_reviews.length > 0 ? 
+                                    product_reviews.map(review => `
+                                        <div class="review-item">
+                                            <div class="review-header">
+                                                <span class="review-author">${review.email.substring(0, 2) + '*'.repeat(review.email.indexOf('@') - 2) + review.email.substring(review.email.indexOf('@'))}</span>
+                                                <span> - </span>
+                                                <span class="review-date">${new Date(review.created_at).toLocaleDateString()}</span>
+                                            </div>
+                                            <div class="review-rating">
+                                                ${'★'.repeat(review.rate)}${'☆'.repeat(5 - review.rate)}
+                                            </div>
+                                            <p class="review-content">${review.content}</p>
+                                        </div>
+                                    `).join('')
+                                    : '<p>Chưa có đánh giá nào cho sản phẩm này.</p>'
+                                }
+                            </div>
                         </div>
                     </div>
                     </div>
@@ -191,7 +200,6 @@
             method: 'GET',
             dataType: 'json',
             success: function(res) {
-                console.log(res);
                 renderRelatedProducts(res.data);
             },
             error: function(error) {
@@ -201,7 +209,6 @@
     }
 
     const renderRelatedProducts = (products) => {
-        console.log(products);
         const relatedProductsContainer = document.getElementById("related_products");
 
         if (products === undefined) {
