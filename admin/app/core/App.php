@@ -33,7 +33,7 @@ class App
 
         // Init Controller
         $this->controller = new $this->controller;
-        call_user_func_array([$this->controller, $this->action], $this->params);
+        ($this->controller)->{$this->action}(...$this->params);
     }
 
     // handle Url

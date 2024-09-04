@@ -6,8 +6,8 @@
                     © <script>
                         document.write(new Date().getFullYear())
                     </script>, made with <i class="fa fa-heart"></i> by
-                    <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                    Rebuild by <span class="font-weight-bold ms-2">Our team</span>
+                    <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Smile Ko</a>
+                    Rebuild by <span class="font-weight-bold ms-2">...</span>
                 </div>
             </div>
             <div class="col-lg-6">
