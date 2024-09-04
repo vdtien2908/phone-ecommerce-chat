@@ -9,6 +9,7 @@ $productsManagementUrl = FOLDER_ROOT . '/admin/products';
 $customersManagementUrl = FOLDER_ROOT . '/admin/customers';
 $ordersManagementUrl = FOLDER_ROOT . '/admin/orders';
 $conversationUrl = FOLDER_ROOT . '/admin/conversation';
+$product_reviewUrl = FOLDER_ROOT . '/admin/product_review';
 
 // Kiểm tra URL hiện tại để xác định link nào đang active
 $currentUrl = $_SERVER['REQUEST_URI'];
@@ -92,6 +93,14 @@ $currentUrl = $_SERVER['REQUEST_URI'];
               <i style="font-size: 1rem;" class="fas fa-boxes ps-2 pe-2 text-center text-dark <?php echo ($currentUrl == $productsManagementUrl ? 'text-white' : 'text-dark'); ?>" aria-hidden="true"></i>
             </div>
             <span class="nav-link-text ms-1">Quản lý sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item pb-2">
+          <a class="nav-link <?php echo ($currentUrl == $product_reviewUrl ? 'active' : ''); ?>" href="<?php echo $product_reviewUrl; ?>">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i style="font-size: 1rem;" class="fa-solid fa-ranking-star ps-2 pe-2 text-center text-dark <?php echo ($currentUrl == $product_reviewUrl ? 'text-white' : 'text-dark'); ?>" aria-hidden="true"></i>
+            </div>
+            <span class="nav-link-text ms-1">Quản lý đánh giá</span>
           </a>
         </li>
         <li class="nav-item pb-2">

@@ -152,4 +152,23 @@ class ProductModel extends BaseModel
         $result = mysqli_fetch_array($this->querySql($sql));;
         return $result;
     }
+
+    // Lấy danh sách đánh giá sản phẩm
+    public function getProductReviews()
+    {
+        $sql = "SELECT * FROM product_reviews WHERE `status` = 1 ORDER BY created_at ASC";
+        $result = $this->querySql($sql);
+        if ($result) {
+            return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        }
+        return [];
+    }
+
+    // Xóa đánh giá sản phẩm
+    public function deleteProductReview($reviewId)
+    {
+        $sql = "UPDATE product_reviews SET status = NOT status WHERE product_review_id = '{$reviewId}'";
+        $result = $this->querySql($sql);
+        return $result;
+    }
 }

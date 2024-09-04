@@ -129,7 +129,7 @@ class ProductModel extends BaseModel
     // Lấy danh sách đánh giá sản phẩm
     public function getProductReviews($productId)
     {
-        $sql = "SELECT * FROM product_reviews WHERE product_id = ${productId} ORDER BY created_at DESC";
+        $sql = "SELECT * FROM product_reviews WHERE product_id = ${productId} AND `status` = 1 ORDER BY created_at DESC";
         $result = $this->querySql($sql);
         if ($result) {
             return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -156,5 +156,20 @@ class ProductModel extends BaseModel
     {
         $sql = "DELETE FROM product_reviews WHERE product_review_id = ${reviewId}";
         return $this->querySql($sql);
+    }
+
+    // Lấy đánh giá của người dùng hiện tại cho một sản phẩm cụ thể
+    public function getUserProductReview($productId, $userEmail)
+    {
+        $sql = "SELECT * FROM product_reviews 
+                WHERE product_id = ${productId} 
+                AND email = '${userEmail}' 
+                ORDER BY created_at DESC 
+                LIMIT 1";
+        $result = $this->querySql($sql);
+        if ($result) {
+            return mysqli_fetch_assoc($result);
+        }
+        return null;
     }
 }

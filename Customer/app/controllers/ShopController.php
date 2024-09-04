@@ -253,4 +253,37 @@ class ShopController extends BaseController
         header('Content-Type: application/json');
         echo json_encode($result);
     }
+
+    public function getUserReview($productId)
+    {
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        if (!isset($_SESSION['auth'])) {
+            $result = [
+                'status' => 401,
+                'message' => "Người dùng chưa đăng nhập",
+                'status' => false
+            ];
+        } else {
+            $userEmail = $_SESSION['auth']['email'];
+            $review = $this->productModel->getUserProductReview($productId, $userEmail);
+            
+            if ($review) {
+                $result = [
+                    'status' => 200,
+                    'message' => "Lấy đánh giá người dùng thành công",
+                    'data' => $review,
+                    'status' => true
+                ];
+            } else {
+                $result = [
+                    'status' => 204,
+                    'message' => "Người dùng chưa đánh giá sản phẩm này",
+                    'status' => false
+                ];
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
 }

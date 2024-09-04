@@ -60,24 +60,72 @@
 
     const URL = 'http://localhost/phone-ecommerce-chat/customer/shop';
     const IMAGES_URL = 'http://localhost/phone-ecommerce-chat/storages/public';
+    let productIds = [];
 
     const fetchProductDetail = () => {
+        let productIds = [];
+        let product = null;
+        let reviews = [];
+        let status = false;
+
+        // Fetch order history to get product IDs
+        $.ajax({
+            url: `http://localhost/phone-ecommerce-chat/Customer/user/getOrderHistory`,
+            method: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function(res) {
+                const orders = res.data;
+                productIds = orders.flatMap(order => 
+                    order.orderDetail.map(detail => detail.product_id)
+                );
+            },
+            error: function(error) {
+                console.error('Lỗi khi lấy lịch sử đơn hàng:', error);
+            }
+        });
+
+        // Fetch product details and reviews
         $.ajax({
             url: `${URL}/showProductDetailData/${productId}`,
             method: 'GET',
             dataType: 'json',
+            async: false,
             success: function(res) {
-                renderProductDetail(res.data, res.reviews);
+                product = res.data;
+                reviews = res.reviews;
             },
             error: function(error) {
                 console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
             }
         });
+
+        // Fetch user review if product exists
+        if (product) {
+            $.ajax({
+                url: `${URL}/getUserReview/${product.product_id}`,
+                method: 'GET',
+                dataType: 'json',
+                async: false,
+                success: function(res) {
+                    status = res.status;
+                },
+                error: function(error) {
+                    console.error('Lỗi khi lấy đánh giá người dùng:', error);
+                }
+            });
+        }
+
+        // Render product detail with all fetched data
+        if (product) {
+            renderProductDetail(product, reviews, productIds, status);
+        } else {
+            console.error('Không thể tải thông tin sản phẩm');
+        }
     }
 
-    const renderProductDetail = (product, product_reviews) => {
-        console.log(product);
-        console.log(product_reviews);
+    const renderProductDetail = (product, product_reviews, productIds, status) => {
+        const isProductInHistory = productIds.includes(product.product_id.toString());
         const productDetailHtml = `
             <div class="row">
                 <div class="col-lg-6">
@@ -89,12 +137,7 @@
                     <div class="product__details__text">
                     <h3>${product.product_name} <span>Danh mục: ${product.category_name}</span></h3>
                     <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <span>( 138 reviews )</span>
+                        <span>( ${product_reviews.length} Đánh giá )</span>
                     </div>
                     <div class="product__details__price">${formatPrice(product.price)} <span>${formatPrice(Number(product.price )+ 450000)}</span></div>
                     <p>${product.description.substring(0, 250)}...</p>
@@ -131,24 +174,19 @@
                     <div class="product__details__tab">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Mô tả</a>
+                        <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Đánh giá (${product_reviews.length})</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Đánh giá</a>
+                        <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Mô tả</a>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                        <h6>Mô tả</h6>
-                        <p>${product.description}.</p>
-                        </div>
-                      
-                        <div class="tab-pane" id="tabs-3" role="tabpanel">
                             <h6>Đánh giá sản phẩm</h6>
                             <div id="product-reviews">
                                 ${product_reviews && product_reviews.length > 0 ? 
                                     product_reviews.map(review => `
-                                        <div class="review-item">
+                                        <div class="review-item mt-4">
                                             <div class="review-header">
                                                 <span class="review-author">${review.email.substring(0, 2) + '*'.repeat(review.email.indexOf('@') - 2) + review.email.substring(review.email.indexOf('@'))}</span>
                                                 <span> - </span>
@@ -163,6 +201,44 @@
                                     : '<p>Chưa có đánh giá nào cho sản phẩm này.</p>'
                                 }
                             </div>
+                            
+                            ${isProductInHistory ? 
+                                status ? `
+                                
+                                ` : `
+                                <!-- New Review Form -->
+                                <div class="review-form mt-4">
+                                    <h6>Thêm đánh giá của bạn</h6>
+                                    <form id="reviewForm">
+                                        <input type="hidden" id="reviewEmail" value="<?php echo isset($_SESSION['auth']) ? $_SESSION['auth']['email'] : ''; ?>">
+                                        <div class="form-group">
+                                            <label for="reviewContent">Nội dung đánh giá:</label>
+                                            <textarea class="form-control" id="reviewContent" rows="3" ></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reviewRating">Số sao:</label>
+                                            <select class="form-control" id="reviewRating" >
+                                                <option value="">Chọn số sao</option>
+                                                <option value="1">1 sao</option>
+                                                <option value="2">2 sao</option>
+                                                <option value="3">3 sao</option>
+                                                <option value="4">4 sao</option>
+                                                <option value="5">5 sao</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" id="reviewSubmit" class="site-btn">Gửi đánh giá</button>
+                                    </form>
+                                </div>
+                                `
+                            : `
+                            <div class="alert alert-info mt-4">
+                                <p>Bạn cần mua sản phẩm này để có thể đánh giá.</p>
+                            </div>
+                            `}
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <h6>Mô tả</h6>
+                            <p>${product.description}.</p>
                         </div>
                     </div>
                     </div>
@@ -174,7 +250,6 @@
     }
 
     const renderStockStatus = (quantity) => {
-        console.log(quantity);
         if (quantity === 0) {
             return `<div class="stock__checkbox text-danger">Hết hàng</div>`;
         } else {
@@ -207,6 +282,11 @@
             }
         });
     }
+
+   
+    
+
+    
 
     const renderRelatedProducts = (products) => {
         const relatedProductsContainer = document.getElementById("related_products");
@@ -271,7 +351,7 @@
 
             // Actions
             $.ajax({
-                url: `http://localhost/phone-ecommerce-chat/customer/cart/store`,
+                url: `http://localhost/phone-ecommerce-chat/Customer/cart/store`,
                 type: 'POST',
                 data: {
                     product_id: productId,
@@ -307,6 +387,53 @@
                 }
             }
             $input.val(newVal);
+        });
+
+        // Add event listener for review form submission
+        $('#product_detail').on('click', '#reviewSubmit', function(e) {
+            e.preventDefault();
+            const email = $('#reviewEmail').val();
+            const content = $('#reviewContent').val();
+            const rating = $('#reviewRating').val();
+            console.log(email, content, rating);
+
+            if (!email) {
+                showToast("Vui lòng đăng nhập để gửi đánh giá", false);
+                return;
+            }
+
+            if(!email || !content || !rating){
+                showToast("Vui lòng điền đầy đủ thông tin đánh giá", false);
+                return;
+            }
+
+            // Send review data to server
+            $.ajax({
+                url: `${URL}/addProductReview`,
+                method: 'POST',
+                data: {
+                    product_id: productId,
+                    email: email,
+                    content: content,
+                    rate: rating
+                },
+                success: function(response) {
+                    if (response.status === 201) {
+                        showToast("Đánh giá của bạn đã được gửi thành công", true);
+                        // Refresh product reviews
+                        fetchProductDetail();
+                        // Reset form
+                        $('#reviewContent').val('');
+                        $('#reviewRating').val('');
+                    } else {
+                        showToast("Có lỗi xảy ra khi gửi đánh giá", false);
+                    }
+                },
+                error: function(error) {
+                    console.error('Lỗi khi gửi đánh giá:', error);
+                    showToast("Có lỗi xảy ra khi gửi đánh giá", false);
+                }
+            });
         });
     });
 </script>
