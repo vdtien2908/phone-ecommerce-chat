@@ -33,9 +33,13 @@ class CustomerModel extends BaseModel
 
     public function getTotalCustomer()
     {
-        $sql = "SELECT COUNT(*) AS totalCustomer FROM customers WHERE customers.status = 1 ORDER BY customers.created_at DESC";
+        $sql = "SELECT COUNT(*) AS totalCustomer FROM customers WHERE status = 1";
         $result = $this->querySql($sql);
-        return 10;
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['totalCustomer'];
+        }
+        return 0;
     }
 
     public function getLastCustomer()

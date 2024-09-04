@@ -43,9 +43,13 @@ class ProductModel extends BaseModel
      */
     public function getTotalProduct()
     {
-        $sql = "SELECT COUNT(*) AS totalProduct FROM products WHERE products.status = 1 ORDER BY products.created_at DESC";
+        $sql = "SELECT COUNT(*) AS totalProduct FROM products WHERE status = 1";
         $result = $this->querySql($sql);
-        return 10;
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['totalProduct'];
+        }
+        return 0;
     }
 
     /**
