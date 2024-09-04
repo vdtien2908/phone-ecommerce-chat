@@ -38,8 +38,8 @@
 
     .chatbot {
         position: fixed;
-        right: 35px;
-        bottom: 90px;
+        right: 100px;
+        bottom: 20px;
         width: 420px;
         background: #fff;
         border-radius: 15px;
@@ -80,12 +80,12 @@
 
     header h2 {
         color: #fff;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
     .chatbot .chatbox {
         overflow-y: auto;
-        height: 510px;
+        height: calc(100vh - 200px);
         padding: 30px 20px 100px;
     }
 
@@ -232,7 +232,7 @@
 
 <div class="chatbot">
     <header>
-        <h2>Augentern CHATBOX</h2>
+        <h2>CHAT</h2>
         <span class="close-btn material-symbols-outlined">close</span>
         <div class="form-check mt-1">
             <input class="form-check-input" type="checkbox" value="" id="isAdminChecked">
