@@ -8,7 +8,7 @@
 </div>
 
 <!-- Page -->
-<?php require_once "./App/views/page/${page}.php" ?>
+<?php require_once "./app/views/page/${page}.php" ?>
 
 <!-- Footer -->
 <?php include(__DIR__ . '/../footers/guest/footer.php');

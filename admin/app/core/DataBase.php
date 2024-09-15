@@ -3,8 +3,8 @@ class DataBase
 {
     const HOST = 'localhost';
     const USERNAME = 'root';
-    const PASSWORD = '';
-    const DB_NAME = 'e_commerce_app';
+    const PASSWORD = 'vdt290802';
+    const DB_NAME = 'e_ecommerce_app';
 
     public function HandleConnect()
     {

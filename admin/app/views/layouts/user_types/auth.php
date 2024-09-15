@@ -20,7 +20,7 @@ include(__DIR__ . '/../navbars/auth/sidebar.php');
     ?>
     <div class="container-fluid py-4">
         <!-- Page -->
-        <?php require_once "./App/views/page/${page}.php" ?>
+        <?php require_once "./app/views/page/${page}.php" ?>
 
         <!-- Footer -->
         <?php include(__DIR__ . '/../footers/auth/footer.php');
