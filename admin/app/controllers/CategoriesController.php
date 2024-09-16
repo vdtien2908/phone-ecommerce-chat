@@ -39,11 +39,11 @@ class CategoriesController extends BaseController
     {
         $categories = $this->categoryModel->getCategories();
 
+
         $result = [
             'status' => 200,
             'data' => $categories
         ];
-
         header('Content-Type: application/json');
         echo json_encode($result);
     }
@@ -126,7 +126,6 @@ class CategoriesController extends BaseController
     public function edit($id)
     {
         $category = $this->categoryModel->getCategory($id);
-
         if (!$category) {
             $_SESSION['success'] = 'Không tìm thấy danh mục';
             header('Location: /phone-ecommerce-chat/admin/categories');

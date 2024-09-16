@@ -8,6 +8,11 @@ class BaseModel extends Database
         $this->connect = $this->HandleConnect();
     }
 
+    private function getUserId()
+    {
+        return isset($_SESSION['auth_admin']['user_id']) ? $_SESSION['auth_admin']['user_id'] : 1;
+    }
+
     public function getAll($tableName, $select = ['*'], $orderBy = [])
     {
         $columns = implode(', ', $select);
@@ -56,6 +61,7 @@ class BaseModel extends Database
         {
             return "'" . $value . "'";
         }
+        $data['created_by'] = $this->getUserId();
         $valueString = array_map('handleString', array_values($data));
         $columns = implode(', ', array_keys($data));
         $newValue = implode(', ', $valueString);
@@ -68,6 +74,7 @@ class BaseModel extends Database
 
     public function update($tableName, $customId, $id, $data)
     {
+        $userId = $this->getUserId();
         $dataSet = [];
         foreach ($data as $key => $value) {
             array_push($dataSet, "${key} = '${value}'");
@@ -75,13 +82,14 @@ class BaseModel extends Database
         $dataSetString = implode(', ', $dataSet);
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $date = date('Y-m-d H:i:s');
-        $sql = "UPDATE ${tableName} SET ${dataSetString}, updated_at='${date}' WHERE ${customId} = ${id}";
+        $sql = "UPDATE ${tableName} SET ${dataSetString}, updated_at='${date}', updated_by='${userId}' WHERE ${customId} = ${id}";
         $this->_query($sql);
     }
 
     public function destroy($tableName, $customId, $id)
     {
-        $sql = "UPDATE ${tableName} SET `delete` = 1 WHERE ${customId} = ${id}";
+        $userId = $this->getUserId();
+        $sql = "UPDATE ${tableName} SET `delete` = 1, deleted_by='${userId}' WHERE ${customId} = ${id}";
         $this->_query($sql);
     }
 

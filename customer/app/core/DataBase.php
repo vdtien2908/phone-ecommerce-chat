@@ -12,6 +12,6 @@ class DataBase
         if (mysqli_connect_errno() === 0) {
             return $connect;
         }
-        return false;
+        return 'Lỗi kết nối cơ sở dữ liệu';
     }
 }

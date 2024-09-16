@@ -1,7 +1,12 @@
-<?php
+    <?php
 class ProductModel extends BaseModel
 {
     const TableName = 'products';
+
+    public function getUserId()
+    {
+        return isset($_SESSION['auth_admin']['user_id']) ? $_SESSION['auth_admin']['user_id'] : 1;
+    }
 
     /**
      * Lấy danh sách tất cả sản phẩm kèm thông tin danh mục của chúng.
@@ -136,7 +141,8 @@ class ProductModel extends BaseModel
      */
     public function deleteProduct($id)
     {
-        $sql = "UPDATE " . self::TableName . " SET status = NOT status WHERE product_id = '{$id}'";
+        $user_id = $this->getUserId();
+        $sql = "UPDATE " . self::TableName . " SET status = NOT status, deleted_by={$user_id} WHERE product_id = '{$id}'";
         $result = $this->querySql($sql);
         return $result;
     }

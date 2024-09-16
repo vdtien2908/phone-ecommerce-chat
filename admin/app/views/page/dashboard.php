@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Tổng doanh thu</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Doanh thu</p>
                             <h5 class="font-weight-bolder mb-0">
                                 <span class="text-success text-sm font-weight-bolder"><?php echo number_format($totalRevenue); ?> VND</span>
                             </h5>
@@ -47,7 +47,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Tổng khách hàng</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Khách hàng</p>
                             <h5 class="font-weight-bolder mb-0">
                                 <?php echo $totalCustomers ?>
                             </h5>
@@ -68,7 +68,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Tổng sản phẩm</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Sản phẩm</p>
                             <h5 class="font-weight-bolder mb-0">
                                 <?php echo $totalProducts ?>
                             </h5>

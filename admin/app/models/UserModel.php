@@ -1,8 +1,12 @@
 <?php
 class UserModel extends BaseModel
 {
-    const TableName = 'Users';
+    const TableName = 'users';
 
+    public function getUserId()
+    {
+        return isset($_SESSION['auth_admin']['user_id']) ? $_SESSION['auth_admin']['user_id'] : 1;
+    }
     public function getUsers()
     {
         $sql = "SELECT u.* FROM users as u ORDER BY u.created_at DESC";

@@ -10,30 +10,32 @@ class App
         $elementUrlBox = $this->handleUrl();
 
         // handle controller
-        if (isset($elementUrlBox)) {
+        if (!empty($elementUrlBox[0])) {
             $this->controller = ucfirst(strtolower($elementUrlBox[0])) . "Controller";
-            //handle str
-            if (file_exists('./app/controllers/' . $elementUrlBox[0] . 'Controller.php')) {
+           
+            if (file_exists('./app/controllers/' . $this->controller . '.php')) {
                 unset($elementUrlBox[0]);
+            } else {
+                $this->controller = 'HomeController';
             }
         }
 
         require_once('./app/controllers/' . $this->controller . '.php');
 
         // handle action
-        if (isset($elementUrlBox[1])) {
+        if (!empty($elementUrlBox[1])) {
             if (method_exists($this->controller, $elementUrlBox[1])) {
                 $this->action = $elementUrlBox[1];
+                unset($elementUrlBox[1]);
             }
-            unset($elementUrlBox[1]); //remove elementUrlBox
         }
 
         // handle param
         $this->params = $elementUrlBox ? array_values($elementUrlBox) : [];
-
+        
         // Init Controller
         $this->controller = new $this->controller;
-        ($this->controller)->{$this->action}(...$this->params);
+        call_user_func_array([$this->controller, $this->action], $this->params);
     }
 
     // handle Url

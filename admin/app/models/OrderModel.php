@@ -3,6 +3,11 @@ class OrderModel extends BaseModel
 {
     const TableName = 'orders';
 
+    public function getUserId   ()
+    {
+        return isset($_SESSION['auth_admin']['user_id']) ? $_SESSION['auth_admin']['user_id'] : 1;
+    }
+
     /**
      * Lấy thông tin chi tiết của tất cả các đơn hàng cùng với chi tiết sản phẩm và danh mục liên quan.
      * 
@@ -132,7 +137,8 @@ class OrderModel extends BaseModel
      */
     public function updateStatuShipping($id)
     {
-        $sql = "UPDATE " . self::TableName . " SET status = 'đang giao' WHERE order_id = '{$id}'";
+        $user_id = $this->getUserId();
+        $sql = "UPDATE " . self::TableName . " SET status = 'đang giao', updated_by={$user_id} WHERE order_id = '{$id}'";
         $result = $this->querySql($sql);
         return $result;
     }
@@ -147,7 +153,8 @@ class OrderModel extends BaseModel
      */
     public function updateStatusCompleted($id)
     {
-        $sql = "UPDATE " . self::TableName . " SET status = 'đã giao' WHERE order_id = '{$id}'";
+        $user_id = $this->getUserId();
+        $sql = "UPDATE " . self::TableName . " SET status = 'đã giao', updated_by={$user_id} WHERE order_id = '{$id}'";
         $result = $this->querySql($sql);
         return $result;
     }
@@ -162,7 +169,8 @@ class OrderModel extends BaseModel
      */
     public function updateStatusCancle($id)
     {
-        $sql = "UPDATE " . self::TableName . " SET status = 'đã hủy' WHERE order_id = '{$id}'";
+        $user_id = $this->getUserId();
+        $sql = "UPDATE " . self::TableName . " SET status = 'đã hủy', updated_by={$user_id} WHERE order_id = '{$id}'";
         $result = $this->querySql($sql);
         return $result;
     }

@@ -61,7 +61,8 @@ class CustomerModel extends BaseModel
 
     public function deleteCustomer($id)
     {
-        $sql = "UPDATE " . self::TableName . " SET status = NOT status WHERE customer_id = '{$id}'";
+        $user_id = isset($_SESSION['auth_admin']['user_id']) ? $_SESSION['auth_admin']['user_id'] : 1;
+        $sql = "UPDATE " . self::TableName . " SET status = NOT status, deleted_by={$user_id} WHERE customer_id = '{$id}'";
         $result = $this->querySql($sql);
         return $result;
     }

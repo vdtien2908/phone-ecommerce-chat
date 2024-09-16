@@ -2,7 +2,7 @@
 class ConversationModel extends BaseModel
 {
     const TableName = 'conversations';
-
+ 
     public function getConversations()
     {
         $sql = "SELECT c.id AS conversation_id, c.status AS conversation_status, m.*, m.status AS msg_status, cm.customer_name, cm.customer_id

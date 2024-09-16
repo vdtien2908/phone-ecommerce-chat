@@ -65,7 +65,7 @@
             contentType: false,
             processData: false,
             success: function(res) {
-                console.log(res.data);
+                console.log(res);
                 $('#categoriesTable').DataTable({
                     data: res.data,
                     columns: [{
