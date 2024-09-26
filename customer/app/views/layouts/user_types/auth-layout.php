@@ -21,7 +21,7 @@
             </ul>
         </div>
         <div class="col-9 p-3">
-            <?php require_once "./App/views/page/${page}.php" ?>
+            <?php require_once "./app/views/page/${page}.php" ?>
         </div>
     </div>
 </div>

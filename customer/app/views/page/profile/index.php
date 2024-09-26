@@ -63,6 +63,7 @@
 </section>
 
 <script>
+    console.log(123)
     $(document).ready(function() {
         $('.site-btn').click(function(event) {
             event.preventDefault();

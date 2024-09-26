@@ -18,13 +18,12 @@ class UserController extends BaseController
             return;
         }
 
-        $this->view(
-            'app',
-            [
-                'page' => 'profile/index',
-                'title' => 'Profile',
-            ]
-        );
+       
+
+        $this->view('app', [
+            'page' => 'profile/index',
+            'title' => 'Thông tin cá nhân',
+        ]);
     }
 
     public function orderHistory()
@@ -33,7 +32,6 @@ class UserController extends BaseController
             header('Location: /phone-ecommerce-chat/customer/auth/login');
             return;
         }
-
         $this->view(
             'app',
             [
@@ -71,9 +69,9 @@ class UserController extends BaseController
     {
         try {
             $id  = $_SESSION['auth']['customer_id'];
-            $existCustomoer = $this->customerModel->getCustomer($id);
+            $existCustomer = $this->customerModel->getCustomer($id);
 
-            if ($existCustomoer) {
+            if ($existCustomer) {
 
                 $data = [
                     'address' => $_POST['address'],

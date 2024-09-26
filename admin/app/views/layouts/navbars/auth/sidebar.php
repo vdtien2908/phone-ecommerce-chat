@@ -173,6 +173,14 @@ $currentUrl = $_SERVER['REQUEST_URI'];
           </a>
         </li>
         <li class="nav-item pb-2">
+          <a class="nav-link <?php echo ($currentUrl == $product_reviewUrl ? 'active' : ''); ?>" href="<?php echo $product_reviewUrl; ?>">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i style="font-size: 1rem;" class="fa-solid fa-ranking-star ps-2 pe-2 text-center text-dark <?php echo ($currentUrl == $product_reviewUrl ? 'text-white' : 'text-dark'); ?>" aria-hidden="true"></i>
+            </div>
+            <span class="nav-link-text ms-1">Quản lý đánh giá</span>
+          </a>
+        </li>
+        <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $ordersManagementUrl ? 'active' : ''); ?>" href="<?php echo $ordersManagementUrl; ?>">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i style="font-size: 1rem;" class="fas fa-dolly-flatbed ps-2 pe-2 text-center text-dark <?php echo ($currentUrl == $ordersManagementUrl ? 'text-white' : 'text-dark'); ?>" aria-hidden="true"></i>

@@ -159,10 +159,6 @@
                     <div class="product__details__widget">
                         <ul>
                         <li>
-                            <span>Còn lại:</span>
-                            ${renderStockStatus(parseInt(product.quantity))}
-                        </li>
-                        <li>
                             <span>Khuyến mãi:</span>
                             <p>Miễn phí vận chuyển</p>
                         </li>
@@ -204,7 +200,6 @@
                             
                             ${isProductInHistory ? 
                                 status ? `
-                                
                                 ` : `
                                 <!-- New Review Form -->
                                 <div class="review-form mt-4">
@@ -351,7 +346,7 @@
 
             // Actions
             $.ajax({
-                url: `http://localhost/phone-ecommerce-chat/Customer/cart/store`,
+                url: `http://localhost/phone-ecommerce-chat/customer/cart/store`,
                 type: 'POST',
                 data: {
                     product_id: productId,

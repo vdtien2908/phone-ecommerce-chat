@@ -147,7 +147,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="trend__content">
                     <div class="section-title">
-                        <h4>Hot Trend</h4>
+                        <h4>Sản phẩm nổi bật</h4>
                     </div>
                     <div id="hotTrendProduct"></div>
                 </div>
