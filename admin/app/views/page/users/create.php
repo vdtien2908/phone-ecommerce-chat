@@ -13,7 +13,7 @@
                 <div class="card-body px-4 pt-0 pb-2">
                     <form method="POST" action="<?php echo URL_APP . '/users/store'; ?>">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="fullname" class="form-control-label">Tên nhân viên</label>
                                     <div class="<?php if (isset($_SESSION['fullname'])) echo 'border border-danger rounded-3'; ?>">
@@ -26,14 +26,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="image" class="form-control-label">Hình ảnh</label>
-                                    <div class="border border-danger rounded-3">
-                                        <input class="form-control" type="file" placeholder="Choose product image" id="image" name="image">
-                                    </div>
-                                </div>
-                            </div>
+                     
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="email" class="form-control-label">Email</label>
@@ -104,7 +97,6 @@
             var isValid = true;
             var email = $('#email').val();
             var password = $('#password').val();
-            var image = $('#image')[0].files.length;
 
 
             // Simple email validation
@@ -113,10 +105,6 @@
                 isValid = false;
             }
 
-            if (image === 0) {
-                showToast('Vui lòng chọn hình ảnh.', false);
-                isValid = false;
-            }
 
             // Check if password is empty
             if (password.length === 0) {

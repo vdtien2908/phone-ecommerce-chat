@@ -13,7 +13,7 @@
                 <div class="card-body px-4 pt-0 pb-2">
                     <form method="POST" action="<?php echo URL_APP . '/users/update/' . $user['user_id'] ; ?>">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="fullname" class="form-control-label">Tên nhân viên</label>
                                     <div class="<?php if (isset($_SESSION['fullname'])) echo 'border border-danger rounded-3'; ?>">
@@ -72,17 +72,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="image" class="form-control-label">Hình ảnh</label>
-                                    <div class="border rounded-3">
-                                        <input class="form-control" type="file" placeholder="Choose user image" id="image" name="image">
-                                    </div>
-                                    <div class="my-2 bg-white p-2">
-                                        <img src="<?php echo IMAGES_PATH . '/' . $user['image'] ?>" alt="Current Product Image" style="width: 200px; height: 200px;">
-                                    </div>
-                                </div>
-                            </div>
+                         
                         </div>
                         <button type="submit" class="btn btn-outline-primary">Cập nhật nhân viên</button>
                     </form>

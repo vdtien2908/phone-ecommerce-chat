@@ -40,9 +40,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Họ và tên
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Hình ảnh
-                                    </th>
+                                 
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Email
                                     </th>
@@ -101,13 +99,6 @@
                                 data: "fullname",
                                 render: function(data, type, row) {
                                     return '<div><p class="text-xs font-weight-bold mb-0 text-truncate" style="max-width: 100px;">' + data + '</p></div>';
-                                }
-                            },
-                            {
-                                data: "image",
-                                render: function(data, type, row) {
-                                    return '<td class="d-flex justify-content-center">' +
-                                        '<img src="' + IMAGES_PATH + '/' + data + '" alt="user Image" class="img-responsive avatar avatar-md me-3">' + '</td>';
                                 }
                             },
                             {

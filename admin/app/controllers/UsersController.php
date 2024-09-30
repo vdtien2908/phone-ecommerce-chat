@@ -66,25 +66,7 @@ class UsersController extends BaseController
                 return;
             }
 
-            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                $allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                if (in_array($fileExtension, $allowedExtensions)) {
-                    $fileName = md5(uniqid()) . basename($_FILES['image']['name']);
-
-                    if (move_uploaded_file($_FILES['image']['tmp_name'], '../storages/public/users_images/' . $fileName)) {
-                    } else {
-                        // Xử lý lỗi lưu trữ hình ảnh
-                        $_SESSION['errors']['fullname'] = 'Không thể tải lên hình ảnh';
-                        header('Location: /phone-ecommerce-chat/admin/users/create');
-                    }
-                } else {
-                    // Xử lý lỗi định dạng hình ảnh không hợp lệ
-                    $_SESSION['errors']['fullname'] = 'Định dạng hình ảnh không hợp lệ';
-                    exit();
-                }
-            }
-
+           
             $data = [
                 'fullname' => $fullname,
                 'email' => $email,
@@ -93,7 +75,6 @@ class UsersController extends BaseController
                 'address' => $address,
                 'phone' => $phone,
                 'role' => $role,
-                'image' => 'users_images/' . $fileName,
             ];
 
             $this->userModel->createUser($data);
@@ -151,23 +132,7 @@ class UsersController extends BaseController
                 exit();
             }
 
-            $fileName = '';
-            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                $allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                if (in_array($fileExtension, $allowedExtensions)) {
-                    $fileName = md5(uniqid()) . basename($_FILES['image']['name']);
-
-                    if (move_uploaded_file($_FILES['image']['tmp_name'], '../storages/public/users_images/' . $fileName)) {
-                    } else {
-                        $_SESSION['errors']['fullname'] = 'Không thể tải lên hình ảnh';
-                        header('Location: /phone-ecommerce-chat/admin/users/create');
-                    }
-                } else {
-                    $_SESSION['errors']['fullname'] = 'Định dạng hình ảnh không hợp lệ';
-                    exit();
-                }
-            }
+           
 
             $oldFileName = null;
             $user = $this->userModel->getUser($id);
@@ -183,7 +148,6 @@ class UsersController extends BaseController
                 'address' => $address,
                 'phone' => $phone,
                 'role' => $role,
-                'image' => $oldFileName != null ? $oldFileName : 'users_images/' . $fileName,
             ];
 
             $this->userModel->updateUser($id, $data);
