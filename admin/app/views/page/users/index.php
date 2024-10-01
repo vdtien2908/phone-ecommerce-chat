@@ -128,7 +128,7 @@
                             },
 
                             {
-                                data: "role",
+                                data: "role_name",
                                 render: function(data, type, row) {
                                     return '<div><p class="text-xs font-weight-bold mb-0 text-truncate" style="max-width: 100px;">' + data + '</p></div>';
                                 }

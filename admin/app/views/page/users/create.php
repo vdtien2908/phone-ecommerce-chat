@@ -65,12 +65,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="role" class="form-control-label">Phân quyền</label>
-                                    <div>
-                                        <input type="radio" id="role_user" name="role" value="user">
-                                        <label for="role_user">Nhân viên</label><br>
-                                        <input type="radio" id="role_admin" name="role" value="admin">
-                                        <label for="role_admin">Quản trị viên</label><br>
-                                    </div>
+                                    <select name="role" id="role" class="form-control">
+                                        <?php foreach ($roles as $role) : ?>
+                                            <option value="<?php echo $role['role_id']; ?>"><?php echo $role['role_name']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -84,11 +83,6 @@
 
 <script>
     const URL_GLOBAL = "http://localhost/phone-ecommerce-chat/admin/users"
-
-    // Cái này là validate form lúc e demo không cần thiết nhưng nếu e muốn làm thì làm thế này
-    // Nhờ con AI nó làm ba cái validate này không quan trọng có cx đưcọ ko có không sao
-    // ok anh xem thử em tạo nhâ nvieen xem đc chưa
-
 
     $(document).ready(function() {
         $('form').submit(function(e) {

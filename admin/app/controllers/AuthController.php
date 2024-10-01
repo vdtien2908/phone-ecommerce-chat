@@ -6,7 +6,7 @@ class AuthController extends BaseController
     private $userModel;
     private $customerModel;
     private $cartModel;
-
+    private $permissionModel;
     /**
      * Lớp AuthController này xử lý các thao tác cơ bản về xác thực người dùng như đăng nhập,
      *  đăng ký, quên mật khẩu, thay đổi mật khẩu và đăng xuất.
@@ -20,6 +20,7 @@ class AuthController extends BaseController
         $this->userModel = $this->model('UserModel');
         $this->customerModel = $this->model('CustomerModel');
         $this->cartModel = $this->model('CartModel');
+        $this->permissionModel = $this->model('PermissionModel');
     }
 
     /**
@@ -78,9 +79,12 @@ class AuthController extends BaseController
 
         if ($result) {
             if (password_verify($pass, $result['password'])) {
-                // if ($pass == $result['password']) {
                 $_SESSION['auth_admin'] = $result;
                 $_SESSION['authenticated_admin'] = true;
+
+                $permissions = $this->permissionModel->getPermissionByUser($result['user_id']);
+                $permission_codes = array_column($permissions, 'permission_code');
+                $_SESSION['permissions'] = $permission_codes;
 
                 $result = [
                     'status' => 200,

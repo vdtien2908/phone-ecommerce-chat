@@ -70,6 +70,7 @@ class BaseModel extends Database
             VALUE(${newValue})
         ";
         $this->_query($sql);
+        return mysqli_insert_id($this->connect);
     }
 
     public function update($tableName, $customId, $id, $data)

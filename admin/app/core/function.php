@@ -39,4 +39,5 @@ class Func
         define('IMAGES_PATH', 'http://localhost/'.$folder_root.'/storages/public');
         define('URL_APP', 'http://localhost/'.$folder_root.'/admin');
     }
+
 }

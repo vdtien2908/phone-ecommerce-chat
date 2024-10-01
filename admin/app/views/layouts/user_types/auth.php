@@ -9,8 +9,12 @@
 <!-- JS -->
 <script src="<?php echo SCRIPT_ROOT; ?>/assets/js/core/popper.min.js"></script>
 <script src="<?php echo SCRIPT_ROOT; ?>/assets/js/core/bootstrap.min.js"></script>
-<!-- Other scripts omitted for brevity -->
-
+<?php
+    function hasPermission($permissionCode) {
+        $permission_codes = $_SESSION['permissions'] ;
+        return in_array($permissionCode, $permission_codes);
+    }
+?>
 <?php
 include(__DIR__ . '/../navbars/auth/sidebar.php');
 ?>

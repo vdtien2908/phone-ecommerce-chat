@@ -62,14 +62,13 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
+                            <div class="form-group">
                                     <label for="role" class="form-control-label">Phân quyền</label>
-                                    <div>
-                                        <input type="radio" id="role_user" name="role" <?php echo $user['role'] == 'user' ? 'checked' : '' ?> value="user">
-                                        <label for="role_user">Nhân viên</label><br>
-                                        <input type="radio" id="role_admin" name="role" <?php echo $user['role'] == 'admin' ? 'checked' : '' ?> value="admin">
-                                        <label for="role_admin">Quản trị viên</label><br>
-                                    </div>
+                                    <select name="role" id="role" class="form-control">
+                                        <?php foreach ($roles as $role) : ?>
+                                            <option value="<?php echo $role['role_id']; ?>" <?php if ($user['role_id'] == $role['role_id']) echo 'selected'; ?>><?php echo $role['role_name']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                          

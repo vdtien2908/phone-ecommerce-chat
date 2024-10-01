@@ -9,7 +9,7 @@ class UserModel extends BaseModel
     }
     public function getUsers()
     {
-        $sql = "SELECT u.* FROM users as u ORDER BY u.created_at DESC";
+        $sql = "SELECT * FROM users,roles WHERE users.role_id = roles.role_id AND users.user_id !=18";
         $result = $this->querySql($sql);
 
         if ($result) {

@@ -6,35 +6,6 @@
             </div>
             <div class="card card-body blur shadow-blur mx-4 mt-n6">
                 <div class="row gx-4">
-                    <div class="col-auto">
-                        <div class="avatar avatar-xl position-relative">
-                            <img id="userImage" src="<?php echo IMAGES_PATH . '/' . $user['image'] ?>" alt="..." class="w-100 border-radius-lg shadow-sm">
-                            <input type="file" id="imageInput" hidden name="image">
-                            <a href="javascript:;" id="editImage" class="btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2">
-                                <i class="fa fa-pen top-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Image"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $('#userImage').click(function() {
-                                $('#imageInput').click();
-                            });
-
-                            $('#editImage').click(function() {
-                                $('#imageInput').click();
-                            });
-
-                            $('#imageInput').change(function() {
-                                var file = this.files[0];
-                                var reader = new FileReader();
-                                reader.onloadend = function() {
-                                    $('#userImage').attr('src', reader.result);
-                                }
-                                reader.readAsDataURL(file);
-                            });
-                        });
-                    </script>
                     <div class="col-auto my-auto">
                         <div class="h-100">
                             <h5 class="mb-1">

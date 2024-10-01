@@ -3,10 +3,12 @@ class UsersController extends BaseController
 {
 
     private $userModel;
+    private $roleModel;
 
     public function __construct()
     {
         $this->userModel = $this->model('UserModel');
+        $this->roleModel = $this->model('RoleModel');
     }
 
     public function index()
@@ -35,11 +37,13 @@ class UsersController extends BaseController
 
     public function create()
     {
+        $roles = $this->roleModel->getRolesNoAdmin();
         $this->view(
             'app',
             [
                 'page' => 'users/create',
-                'title' => 'Khach hang'
+                'title' => 'Khach hang',
+                'roles' => $roles
             ]
         );
     }
@@ -53,9 +57,9 @@ class UsersController extends BaseController
             $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
             $address = isset($_POST['address']) ? $_POST['address'] : '';
             $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
-            $role = isset($_POST['role']) ? $_POST['role'] : 'user';
+            $role = isset($_POST['role']) ? $_POST['role'] : '';
 
-            if (!$fullname || !$email || !$password || !$gender) {
+            if (!$fullname || !$email || !$password || !isset($gender)) {
                 $result = [
                     'status' => 500,
                     'message' => 'Thiếu thông tin bắt buộc',
@@ -74,7 +78,7 @@ class UsersController extends BaseController
                 'gender' => $gender,
                 'address' => $address,
                 'phone' => $phone,
-                'role' => $role,
+                'role_id' => $role,
             ];
 
             $this->userModel->createUser($data);
@@ -99,6 +103,7 @@ class UsersController extends BaseController
 
     public function edit($id)
     {
+        $roles = $this->roleModel->getRolesNoAdmin();
         $user = $this->userModel->getUser($id);
 
         if (!$user) {
@@ -111,6 +116,7 @@ class UsersController extends BaseController
             [
                 'page' => 'users/edit',
                 'user' => $user,
+                'roles' => $roles
             ]
         );
     }
@@ -128,7 +134,7 @@ class UsersController extends BaseController
 
             if (!$fullname || !$email) {
                 $_SESSION['errors']['fullname'] = 'Thiếu thông tin bắt buộc';
-                header('Location: /phone-ecommerce-chat/admin/users/create');
+                header('Location: /phone-ecommerce-chat/admin/users/edit/' . $id);
                 exit();
             }
 
@@ -136,9 +142,7 @@ class UsersController extends BaseController
 
             $oldFileName = null;
             $user = $this->userModel->getUser($id);
-            if (empty($fileName)) {
-                $oldFileName = $user['image'];
-            }
+         
 
             $data = [
                 'fullname' => $fullname,
@@ -147,7 +151,7 @@ class UsersController extends BaseController
                 'gender' => $gender,
                 'address' => $address,
                 'phone' => $phone,
-                'role' => $role,
+                'role_id' => $role,
             ];
 
             $this->userModel->updateUser($id, $data);
