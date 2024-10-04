@@ -7,7 +7,9 @@
                         <div>
                             <h5 class="mb-0">Quản lý khách hàng</h5>
                         </div>
-                        <a href=" <?php echo URL_APP . '/customers/create' ?>" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; Tạo khách hàng</a>
+                        <?php if (hasPermission('create_customer')) : ?>
+                            <a href=" <?php echo URL_APP . '/customers/create' ?>" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; Tạo khách hàng</a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <?php if (isset($_SESSION['success'])) : ?>
@@ -130,35 +132,35 @@
                                     var editUrl = URL_APP + '/customers/edit/' + row.customer_id;
                                     var deleteUrl = URL_APP + '/customers/destroy/' + row.customer_id;
                                     var deleteModalId = 'deleteModal' + row.customer_id;
-                                    return '<td class="text-center">' +
-                                        '<a href="' + editUrl + '" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit customer">' +
+                                    var editButton = '<?php if (hasPermission('edit_customer')) : ?><a href="' + editUrl + '" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit customer">' +
                                         '<i class="fas fa-user-edit text-secondary"></i>' +
-                                        '</a>' +
-                                        '<span type="button" data-bs-toggle="modal" data-bs-target="#' + deleteModalId + '">' +
+                                        '</a><?php endif; ?>';
+                                    var deleteButton = '<?php if (hasPermission('delete_customer')) : ?><span type="button" data-bs-toggle="modal" data-bs-target="#' + deleteModalId + '">' +
                                         (row.status == 0 ? '<i class="fas fa-undo text-secondary cursor-pointer"></i>' : '<i class="cursor-pointer fas fa-trash text-secondary"></i>') +
-                                        '</span>' +
-                                        '<div class="modal fade" id="' + deleteModalId + '" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">' +
-                                        '<div class="modal-dialog">' +
-                                        '<div class="modal-content">' +
-                                        '<div class="modal-header">' +
-                                        '<h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>' +
-                                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
-                                        '</div>' +
-                                        '<div class="modal-body">' +
-                                        (row.status == 1 ? 'Bạn có chắc chắn muốn xóa khách hàng: ' + row.customer_name + '?' : 'Bạn có chắc chắn muốn khôi phục khách hàng: ' + row.customer_name + '?') +
-                                        '</div>' +
-                                        '<div class="modal-footer">' +
-                                        '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>' +
-                                        '<form method="POST" id="delete_form" action="' + deleteUrl + '">' +
-                                        '<button type="submit" class="btn ' + (row.status == 1 ? 'btn-danger' : 'btn-success') + '">' +
-                                        (row.status == 1 ? 'Xóa khách hàng' : 'Khôi phục') +
-                                        '</button>' +
-                                        '</form>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</td>';
+                                        '</span><?php endif; ?>';
+                                    return editButton + deleteButton +
+                                    '<div class="modal fade" id="' + deleteModalId + '" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">' +
+                                    '<div class="modal-dialog">' +
+                                    '<div class="modal-content">' +
+                                    '<div class="modal-header">' +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
+                                    '</div>' +
+                                    '<div class="modal-body">' +
+                                    (row.status == 1 ? 'Bạn có chắc chắn muốn xóa khách hàng: ' + row.customer_name + '?' : 'Bạn có chắc chắn muốn khôi phục khách hàng: ' + row.customer_name + '?') +
+                                    '<div class="modal-footer">' +
+                                    '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>' +
+                                    '<form method="POST" id="delete_form" action="' + deleteUrl + '">' +
+                                    '<button type="submit" class="btn ' + (row.status == 1 ? 'btn-danger' : 'btn-success') + '">' +
+                                    (row.status == 1 ? 'Xóa khách hàng' : 'Khôi phục') +
+                                    '</button>' +
+                                    '</form>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</td>';
                                 }
                             }
                         ],

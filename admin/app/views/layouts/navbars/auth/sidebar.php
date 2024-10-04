@@ -50,10 +50,12 @@ $currentUrl = $_SERVER['REQUEST_URI'];
           </a>
         </li>
       <?php endif; ?>
-        <!-- Quản trị -->
+        <!-- Quản trị tag -->
         <li class="nav-item mt-2">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Quản trị</h6>
         </li>
+
+        <?php if(hasPermission('profile')): ?>
         <!-- Thông tin cá nhân -->
         <li class="nav-item">
           <a class="nav-link <?php echo ($currentUrl == $userProfileUrl ? 'active' : ''); ?>" href="<?php echo $userProfileUrl; ?>">
@@ -76,6 +78,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Thông tin cá nhân</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if(hasPermission('manager_user')): ?>
         <!-- Quản lý nhân viên -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $usersManagementUrl ? 'active' : ''); ?>" href="<?php echo $usersManagementUrl; ?>">
@@ -85,6 +90,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý nhân viên</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if(hasPermission('manager_category')): ?>
         <!-- Quản lý danh mục -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $categoriesManagementUrl ? 'active' : ''); ?>" href="<?php echo $categoriesManagementUrl; ?>">
@@ -94,6 +102,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý danh mục</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if(hasPermission('manager_product')): ?>
         <!-- Quản lý sản phẩm -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $productsManagementUrl ? 'active' : ''); ?>" href="<?php echo $productsManagementUrl; ?>">
@@ -103,6 +114,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý sản phẩm</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if(hasPermission('manager_product_review')): ?>
         <!-- Quản lý đánh giá -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $product_reviewUrl ? 'active' : ''); ?>" href="<?php echo $product_reviewUrl; ?>">
@@ -112,6 +126,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý đánh giá</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if(hasPermission('manager_customer')): ?>
         <!-- Quản lý khách hàng -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $customersManagementUrl ? 'active' : ''); ?>" href="<?php echo $customersManagementUrl; ?>">
@@ -121,6 +138,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý khách hàng</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if(hasPermission('manager_order')): ?>
         <!-- Quản lý đơn hàng -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $ordersManagementUrl ? 'active' : ''); ?>" href="<?php echo $ordersManagementUrl; ?>">
@@ -130,6 +150,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý đơn hàng</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if(hasPermission('manager_chat')): ?>
         <!-- Quản lý hội thoại -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $conversationUrl ? 'active' : ''); ?>" href="<?php echo $conversationUrl; ?>">
@@ -139,6 +162,9 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý hội thoại</span>
           </a>
         </li>
+        <?php endif; ?>
+
+        <?php if($_SESSION['auth_admin']['role_id'] == 1): ?>
         <!-- Quản lý quyền -->
         <li class="nav-item pb-2">
           <a class="nav-link <?php echo ($currentUrl == $permissionUrl ? 'active' : ''); ?>" href="<?php echo $permissionUrl; ?>">
@@ -148,7 +174,7 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             <span class="nav-link-text ms-1">Quản lý quyền</span>
           </a>
         </li>
-    
+        <?php endif; ?>
     </ul>
   </div>
 </aside>

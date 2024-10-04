@@ -11,9 +11,6 @@
                             <h5 class="mb-1">
                                 <?php echo $user['fullname'] ?>
                             </h5>
-                            <p class="mb-0 font-weight-bold text-sm text-uppercase">
-                                <?php echo $user['role'] ?>
-                            </p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
@@ -50,14 +47,14 @@
                 </div>
                 <div class="card-body pt-4 p-3">
                     <!-- Hidden value -->
-                    <input class="form-control" type="hidden" value="<?php echo $user['role'] ?>" id="role" name="role" value="{{ auth()->user()->role }}">
+                    <input class="form-control" type="hidden" value="<?php echo $user['role_id'] ?>" id="role" name="role_id">
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">Họ và tên</label>
                                 <div class="@error('fullname')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" <?php echo ($user['role'] == 'admin') ? 'readonly' : ''; ?> value="<?php echo $user['fullname'] ?>" type="text" placeholder="Name" id="user-name" name="fullname">
+                                    <input class="form-control" value="<?php echo $user['fullname'] ?>" type="text" placeholder="Name" id="user-name" name="fullname" <?php echo ($user['role_id'] == 1) ? 'readonly' : ''; ?>>
                                 </div>
                             </div>
                         </div>
@@ -89,9 +86,9 @@
                             <div class="form-group">
                                 <label for="gender" class="form-control-label">Giới tính</label>
                                 <div>
-                                    <input <?php echo ($user['role'] == 'admin') ? 'disabled' : ''; ?> type="radio" <?php echo $user['gender'] == 1 ? 'checked' : '' ?> id="gender_male" name="gender" value="1">
+                                    <input <?php echo ($user['role_id'] == 1) ? 'disabled' : ''; ?> type="radio" <?php echo $user['gender'] == 1 ? 'checked' : '' ?> id="gender_male" name="gender" value="1">
                                     <label for="gender_male">Nam</label><br>
-                                    <input <?php echo ($user['role'] == 'admin') ? 'disabled' : ''; ?> type="radio" <?php echo $user['gender'] == 0 ? 'checked' : '' ?> id="gender_female" name="gender" value="0">
+                                    <input <?php echo ($user['role_id'] == 1) ? 'disabled' : ''; ?> type="radio" <?php echo $user['gender'] == 0 ? 'checked' : '' ?> id="gender_female" name="gender" value="0">
                                     <label for="gender_female">Nữ</label><br>
                                 </div>
 

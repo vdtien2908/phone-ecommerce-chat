@@ -112,9 +112,11 @@
                             render: function(data, type, row) {
                                 var deleteUrl = '<?php echo URL_APP; ?>/product_review/destroy/' + row.product_review_id;
                                 var deleteModalId = 'deleteModal' + row.product_review_id;
-                                return '<span type="button" data-bs-toggle="modal" data-bs-target="#' + deleteModalId + '">' +
+
+                                var deleteButton = '<?php if (hasPermission('delete_product_review')) : ?><span type="button" data-bs-toggle="modal" data-bs-target="#' + deleteModalId + '">' +
                                     '<i class="cursor-pointer fas fa-trash text-secondary"></i>' +
-                                    '</span>' +
+                                    '</span><?php endif; ?>';
+                                    return deleteButton +
                                     '<div class="modal fade" id="' + deleteModalId + '" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">' +
                                     '<div class="modal-dialog">' +
                                     '<div class="modal-content">' +

@@ -180,7 +180,6 @@ class UsersController extends BaseController
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
             $password = $_POST['password'];
-            $role = $_POST['role'];
             $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
             $address = isset($_POST['address']) ? $_POST['address'] : '';
             $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
@@ -196,30 +195,6 @@ class UsersController extends BaseController
                 return;;
             }
 
-            $fileName = '';
-            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                $allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                if (in_array($fileExtension, $allowedExtensions)) {
-                    $fileName = md5(uniqid()) . basename($_FILES['image']['name']);
-
-                    if (move_uploaded_file($_FILES['image']['tmp_name'], '../storages/public/users_images/' . $fileName)) {
-                    } else {
-                        $_SESSION['errors']['fullname'] = 'Không thể tải lên hình ảnh';
-                        header('Location: /phone-ecommerce-chat/admin/users/create');
-                    }
-                } else {
-                    $_SESSION['errors']['fullname'] = 'Định dạng hình ảnh không hợp lệ';
-                    exit();
-                }
-            }
-
-            $oldFileName = null;
-            $user = $this->userModel->getUser($id);
-            if (empty($fileName)) {
-                $oldFileName = $user['image'];
-            }
-
             $data = [
                 'fullname' => $fullname,
                 'email' => $email,
@@ -227,8 +202,6 @@ class UsersController extends BaseController
                 'gender' => $gender,
                 'address' => $address,
                 'phone' => $phone,
-                'role' => $role,
-                'image' => $oldFileName != null ? $oldFileName : 'users_images/' . $fileName,
             ];
 
             $this->userModel->updateUser($id, $data);

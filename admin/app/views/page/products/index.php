@@ -7,7 +7,9 @@
                         <div>
                             <h5 class="mb-0">Quản lý sản phẩm</h5>
                         </div>
-                        <a href=" <?php echo URL_APP . '/products/create' ?>" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; Tạo sản phẩm</a>
+                        <?php if (hasPermission('create_product')) : ?>
+                            <a href=" <?php echo URL_APP . '/products/create' ?>" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; Tạo sản phẩm</a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <?php if (isset($_SESSION['success'])) : ?>
@@ -143,35 +145,29 @@
                                     var editUrl = URL_APP + '/products/edit/' + row.product_id;
                                     var deleteUrl = URL_APP + '/products/destroy/' + row.product_id;
                                     var deleteModalId = 'deleteModal' + row.product_id;
-                                    return '<td class="text-center">' +
-                                        '<a href="' + editUrl + '" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit product">' +
-                                        '<i class="fas fa-user-edit text-secondary"></i>' +
-                                        '</a>' +
-                                        '<span type="button" data-bs-toggle="modal" data-bs-target="#' + deleteModalId + '">' +
-                                        (row.status == 0 ? '<i class="fas fa-undo text-secondary cursor-pointer"></i>' : '<i class="cursor-pointer fas fa-trash text-secondary"></i>') +
-                                        '</span>' +
-                                        '<div class="modal fade" id="' + deleteModalId + '" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">' +
-                                        '<div class="modal-dialog">' +
-                                        '<div class="modal-content">' +
-                                        '<div class="modal-header">' +
-                                        '<h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>' +
-                                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
-                                        '</div>' +
-                                        '<div class="modal-body">' +
-                                        (row.status == 1 ? 'Bạn có chắc chắn muốn xóa sản phẩm: ' + row.product_name + '?' : 'Bạn có chắc chắn muốn khôi phục sản phẩm: ' + row.product_name + '?') +
-                                        '</div>' +
-                                        '<div class="modal-footer">' +
-                                        '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>' +
-                                        '<form method="POST" id="delete_form" action="' + deleteUrl + '">' +
-                                        '<button type="submit" class="btn ' + (row.status == 1 ? 'btn-danger' : 'btn-success') + '">' +
-                                        (row.status == 1 ? 'Xóa sản phẩm' : 'Khôi phục') +
-                                        '</button>' +
-                                        '</form>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</td>';
+                                    
+                                    var editButton = '<?php if (hasPermission('edit_user')) : ?><a href="' + editUrl + '" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Edit user"><i class="fas fa-user-edit text-secondary"></i></a><?php endif; ?>';
+                                    var deleteButton = '<?php if (hasPermission('delete_user')) : ?><span type="button" data-bs-toggle="modal" data-bs-target="#' + deleteModalId + '">' +
+                                    (row.status == 0 ? '<i class="fas fa-undo text-secondary cursor-pointer"></i>' : '<i class="cursor-pointer fas fa-trash text-secondary"></i>') +
+                                    '</span><?php endif; ?>';
+                                    return editButton + deleteButton +
+                                    '<div class="modal fade" id="' + deleteModalId + '" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">' +
+                                    '<div class="modal-dialog">' +
+                                    '<div class="modal-content">' +
+                                    '<div class="modal-header">' +
+                                    '<h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>' +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
+                                    '</div>' +
+                                    '<div class="modal-body">Bạn có chắc chắn muốn xóa sản phẩm: ' + row.product_name + '?</div>' +
+                                    '<div class="modal-footer">' +
+                                    '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>' +
+                                    '<form method="POST" id="delete_form" action="' + deleteUrl + '">' +
+                                    '<button type="submit" class="btn btn-danger">Xóa sản phẩm</button>' +
+                                    '</form>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>';
                                 }
                             }
                         ],
