@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1-4.fc40
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 01, 2024 at 10:14 AM
--- Server version: 8.0.39
--- PHP Version: 8.0.30
+-- Generation Time: Oct 04, 2024 at 06:32 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,14 +28,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `carts` (
-  `cart_id` bigint UNSIGNED NOT NULL,
-  `customer_id` bigint UNSIGNED NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `cart_id` bigint(20) UNSIGNED NOT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -65,15 +65,15 @@ INSERT INTO `carts` (`cart_id`, `customer_id`, `status`, `created_at`, `updated_
 --
 
 CREATE TABLE `cart_details` (
-  `cart_detail_id` bigint UNSIGNED NOT NULL,
-  `cart_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
-  `quantity` int NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `cart_detail_id` bigint(20) UNSIGNED NOT NULL,
+  `cart_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -101,14 +101,14 @@ INSERT INTO `cart_details` (`cart_detail_id`, `cart_id`, `product_id`, `quantity
 --
 
 CREATE TABLE `categories` (
-  `cat_id` bigint UNSIGNED NOT NULL,
-  `category_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `cat_id` bigint(20) UNSIGNED NOT NULL,
+  `category_name` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -137,14 +137,14 @@ INSERT INTO `categories` (`cat_id`, `category_name`, `status`, `created_at`, `up
 --
 
 CREATE TABLE `conversations` (
-  `id` bigint UNSIGNED NOT NULL,
-  `customer_id` bigint UNSIGNED DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '0',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `customer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -168,20 +168,20 @@ INSERT INTO `conversations` (`id`, `customer_id`, `status`, `created_at`, `updat
 --
 
 CREATE TABLE `customers` (
-  `customer_id` bigint UNSIGNED NOT NULL,
-  `customer_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `birthday` date DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `customer_points` int NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `address` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `customer_points` int(11) NOT NULL DEFAULT 0,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -211,17 +211,17 @@ INSERT INTO `customers` (`customer_id`, `customer_name`, `email`, `password`, `b
 --
 
 CREATE TABLE `messages` (
-  `id` bigint NOT NULL,
-  `cvs_id` bigint UNSIGNED NOT NULL,
-  `content` longtext COLLATE utf8mb4_general_ci,
-  `status` tinyint(1) NOT NULL DEFAULT '0',
-  `sender_type` varchar(15) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'customer',
-  `receiver_type` varchar(15) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'admin',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `id` bigint(20) NOT NULL,
+  `cvs_id` bigint(20) UNSIGNED NOT NULL,
+  `content` longtext DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `sender_type` varchar(15) NOT NULL DEFAULT 'customer',
+  `receiver_type` varchar(15) NOT NULL DEFAULT 'admin',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -296,20 +296,20 @@ INSERT INTO `messages` (`id`, `cvs_id`, `content`, `status`, `sender_type`, `rec
 --
 
 CREATE TABLE `orders` (
-  `order_id` bigint UNSIGNED NOT NULL,
-  `customer_id` bigint UNSIGNED NOT NULL,
-  `promotion_id` bigint UNSIGNED DEFAULT NULL,
-  `name_receiver` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone_receiver` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address_receiver` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notes` mediumtext COLLATE utf8mb4_unicode_ci,
+  `order_id` bigint(20) UNSIGNED NOT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `promotion_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `name_receiver` varchar(255) NOT NULL,
+  `phone_receiver` varchar(255) NOT NULL,
+  `address_receiver` mediumtext NOT NULL,
+  `notes` mediumtext DEFAULT NULL,
   `total_price` double NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'đang chờ',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `status` varchar(255) NOT NULL DEFAULT 'đang chờ',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -327,16 +327,16 @@ INSERT INTO `orders` (`order_id`, `customer_id`, `promotion_id`, `name_receiver`
 --
 
 CREATE TABLE `order_details` (
-  `order_detail_id` bigint UNSIGNED NOT NULL,
-  `order_id` bigint UNSIGNED NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
-  `quantity` int NOT NULL,
+  `order_detail_id` bigint(20) UNSIGNED NOT NULL,
+  `order_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL,
   `price` double NOT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -354,15 +354,15 @@ INSERT INTO `order_details` (`order_detail_id`, `order_id`, `product_id`, `quant
 --
 
 CREATE TABLE `permissions` (
-  `permission_id` int NOT NULL,
-  `permission_code` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `permission_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `permission_id` int(11) NOT NULL,
+  `permission_code` varchar(250) NOT NULL,
+  `permission_name` varchar(50) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -373,7 +373,7 @@ INSERT INTO `permissions` (`permission_id`, `permission_code`, `permission_name`
 (1, 'statistic', 'Thống kê', 1, '2024-10-01 06:16:15', '2024-10-01 06:16:15', NULL, NULL, NULL),
 (2, 'profile', 'Thông tin cá nhân', 1, '2024-10-01 06:17:00', '2024-10-01 06:17:00', NULL, NULL, NULL),
 (4, 'manager_category', 'Quản lý danh mục', 1, '2024-10-01 06:18:41', '2024-10-01 06:18:41', NULL, NULL, NULL),
-(5, 'create_categort', 'Thêm danh mục', 1, '2024-10-01 06:19:16', '2024-10-01 06:19:16', NULL, NULL, NULL),
+(5, 'create_category', 'Thêm danh mục', 1, '2024-10-01 06:19:16', '2024-10-01 06:19:16', NULL, NULL, NULL),
 (6, 'edit_category', 'Sửa danh mục', 1, '2024-10-01 06:19:16', '2024-10-01 06:19:16', NULL, NULL, NULL),
 (7, 'delete_category', 'Xóa danh mục', 1, '2024-10-01 06:19:39', '2024-10-01 06:19:39', NULL, NULL, NULL),
 (8, 'manager_user', 'Quản lý nhân viên', 1, '2024-10-01 06:21:20', '2024-10-01 06:21:20', NULL, NULL, NULL),
@@ -404,19 +404,19 @@ INSERT INTO `permissions` (`permission_id`, `permission_code`, `permission_name`
 --
 
 CREATE TABLE `products` (
-  `product_id` bigint UNSIGNED NOT NULL,
-  `cat_id` bigint UNSIGNED NOT NULL,
-  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `cat_id` bigint(20) UNSIGNED NOT NULL,
+  `product_name` varchar(255) NOT NULL,
   `price` double NOT NULL,
-  `quantity` int NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `quantity` int(11) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `image` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -431,11 +431,11 @@ INSERT INTO `products` (`product_id`, `cat_id`, `product_name`, `price`, `quanti
 (5, 1, 'iPhone 13 Pro Max 128GB', 17999000, 100, 'Thông tin sản phẩm\r\nTrong khi sức hút đến từ bộ 4 phiên bản iPhone 12 vẫn chưa nguội đi, thì hãng điện thoại Apple đã mang đến cho người dùng một siêu phẩm mới iPhone 13 với nhiều cải tiến thú vị sẽ mang lại những trải nghiệm hấp dẫn nhất cho người dùng.\r\nHiệu năng vượt trội nhờ chip Apple A15 Bionic\r\nCon chip Apple A15 Bionic siêu mạnh được sản xuất trên quy trình 5 nm giúp iPhone 13 đạt hiệu năng ấn tượng, với CPU nhanh hơn 50%, GPU nhanh hơn 30% so với các đối thủ trong cùng phân khúc.Tốc độ 5G tốt hơn \r\nMạng 5G được cải thiện chất lượng với nhiều băng tần hơn, với 5G giúp điện thoại xem trực tuyến hay tải xuống các ứng dụng và tài liệu đều đạt tốc độ nhanh chóng. Không chỉ vậy, siêu phẩm mới này còn có chế độ dữ liệu thông minh, tự động phát hiện và giảm tải tốc độ mạng để tiết kiệm năng lượng khi không cần dùng tốc độ cao.\r\nMàn hình Super Retina XDR độ sáng cao, tiết kiệm pin\r\niPhone 13 sử dụng tấm nền OLED với kích thước màn hình 6.1 inch cho chất lượng màu sắc và chi tiết hình ảnh sắc nét, sống động, độ phân giải đạt 1170 x 2532 Pixels.', 'product_images/UEB31MP5b7Fu1O923rCWYM0GuCMNvzYrplIrDBlX.jpg', 1, '2024-03-09 14:48:27', '2024-03-09 14:48:27', NULL, NULL, NULL),
 (6, 2, 'Huawei P30 blue', 18000000, 0, 'Huawei P30 là chiếc smartphone cao cấp vừa được Huawei giới thiệu với thiết kế tuyệt đẹp, hiệu năng mạnh mẽ và thiết lập camera ấn tượng.\r\nCamera siêu ấn tượng\r\nĐiện thoại dòng P của Huawei luôn cho ra mắt những công nghệ camera mới và P30 cũng không ngoại lệ.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.SuperSpectrum là tên của Huawei cho bộ lọc màu RYYB, loại bỏ các yếu tố màu xanh lá cây khỏi bộ lọc RGGB và thay thế chúng bằng màu vàng.\r\nHuawei nói rằng việc chuyển từ màu xanh lục sang màu vàng sẽ giúp cảm biến hấp thụ nhiều ánh sáng hơn.Màu vàng cũng hấp thụ thêm ánh sáng xanh lá và đỏ, giúp cải thiện chất lượng hình ảnh trong bất cứ điều kiện nào, đặc biệt là trong điều kiện ánh sáng yếu.\r\nNgoài ra còn có một tính năng AI mới gọi là AI HDR, giúp điều chỉnh ánh sáng trên tấm ảnh dựa trên nguồn sáng từ đó đem lại cho người dùng những bức ảnh chất lượng hơn.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.', 'product_images/zXxZj7CYYIYMBiKUTtVxtlfNX8Ue5IIxdHfNmBIU.jpg', 1, '2024-03-09 14:51:14', '2024-03-09 14:51:14', NULL, NULL, NULL),
 (8, 2, 'Huawei Nova 5T blue', 10000000, 403, 'Huawei P30 là chiếc smartphone cao cấp vừa được Huawei giới thiệu với thiết kế tuyệt đẹp, hiệu năng mạnh mẽ và thiết lập camera ấn tượng.\r\nCamera siêu ấn tượng\r\nĐiện thoại dòng P của Huawei luôn cho ra mắt những công nghệ camera mới và P30 cũng không ngoại lệ.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.SuperSpectrum là tên của Huawei cho bộ lọc màu RYYB, loại bỏ các yếu tố màu xanh lá cây khỏi bộ lọc RGGB và thay thế chúng bằng màu vàng.\r\nHuawei nói rằng việc chuyển từ màu xanh lục sang màu vàng sẽ giúp cảm biến hấp thụ nhiều ánh sáng hơn.Màu vàng cũng hấp thụ thêm ánh sáng xanh lá và đỏ, giúp cải thiện chất lượng hình ảnh trong bất cứ điều kiện nào, đặc biệt là trong điều kiện ánh sáng yếu.\r\nNgoài ra còn có một tính năng AI mới gọi là AI HDR, giúp điều chỉnh ánh sáng trên tấm ảnh dựa trên nguồn sáng từ đó đem lại cho người dùng những bức ảnh chất lượng hơn.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.', 'product_images/966EClTWziiiiOvoT74jbAoQ1jIzi7aKObDrjWBl.jpg', 1, '2024-03-09 14:51:51', '2024-03-09 14:51:51', NULL, NULL, NULL),
-(9, 2, 'Huawei Mate 30', 25000000, 100, 'Huawei P30 là chiếc smartphone cao cấp vừa được Huawei giới thiệu với thiết kế tuyệt đẹp, hiệu năng mạnh mẽ và thiết lập camera ấn tượng.\r\nCamera siêu ấn tượng\r\nĐiện thoại dòng P của Huawei luôn cho ra mắt những công nghệ camera mới và P30 cũng không ngoại lệ.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.SuperSpectrum là tên của Huawei cho bộ lọc màu RYYB, loại bỏ các yếu tố màu xanh lá cây khỏi bộ lọc RGGB và thay thế chúng bằng màu vàng.\r\nHuawei nói rằng việc chuyển từ màu xanh lục sang màu vàng sẽ giúp cảm biến hấp thụ nhiều ánh sáng hơn.Màu vàng cũng hấp thụ thêm ánh sáng xanh lá và đỏ, giúp cải thiện chất lượng hình ảnh trong bất cứ điều kiện nào, đặc biệt là trong điều kiện ánh sáng yếu.\r\nNgoài ra còn có một tính năng AI mới gọi là AI HDR, giúp điều chỉnh ánh sáng trên tấm ảnh dựa trên nguồn sáng từ đó đem lại cho người dùng những bức ảnh chất lượng hơn.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.', 'product_images/LK8BM73YA2yxt680u8KtniclzvFPRFZgtI5rw9a9.jpg', 0, '2024-03-09 14:52:19', '2024-03-09 14:52:19', NULL, NULL, NULL),
+(9, 2, 'Huawei Mate 30', 25000000, 100, 'Huawei P30 là chiếc smartphone cao cấp vừa được Huawei giới thiệu với thiết kế tuyệt đẹp, hiệu năng mạnh mẽ và thiết lập camera ấn tượng.\r\nCamera siêu ấn tượng\r\nĐiện thoại dòng P của Huawei luôn cho ra mắt những công nghệ camera mới và P30 cũng không ngoại lệ.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.SuperSpectrum là tên của Huawei cho bộ lọc màu RYYB, loại bỏ các yếu tố màu xanh lá cây khỏi bộ lọc RGGB và thay thế chúng bằng màu vàng.\r\nHuawei nói rằng việc chuyển từ màu xanh lục sang màu vàng sẽ giúp cảm biến hấp thụ nhiều ánh sáng hơn.Màu vàng cũng hấp thụ thêm ánh sáng xanh lá và đỏ, giúp cải thiện chất lượng hình ảnh trong bất cứ điều kiện nào, đặc biệt là trong điều kiện ánh sáng yếu.\r\nNgoài ra còn có một tính năng AI mới gọi là AI HDR, giúp điều chỉnh ánh sáng trên tấm ảnh dựa trên nguồn sáng từ đó đem lại cho người dùng những bức ảnh chất lượng hơn.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.', 'product_images/LK8BM73YA2yxt680u8KtniclzvFPRFZgtI5rw9a9.jpg', 1, '2024-03-09 14:52:19', '2024-03-09 14:52:19', NULL, NULL, 18),
 (10, 2, 'Huawei Nova 7I', 7500000, 93, 'Huawei P30 là chiếc smartphone cao cấp vừa được Huawei giới thiệu với thiết kế tuyệt đẹp, hiệu năng mạnh mẽ và thiết lập camera ấn tượng.\r\nCamera siêu ấn tượng\r\nĐiện thoại dòng P của Huawei luôn cho ra mắt những công nghệ camera mới và P30 cũng không ngoại lệ.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.SuperSpectrum là tên của Huawei cho bộ lọc màu RYYB, loại bỏ các yếu tố màu xanh lá cây khỏi bộ lọc RGGB và thay thế chúng bằng màu vàng.\r\nHuawei nói rằng việc chuyển từ màu xanh lục sang màu vàng sẽ giúp cảm biến hấp thụ nhiều ánh sáng hơn.Màu vàng cũng hấp thụ thêm ánh sáng xanh lá và đỏ, giúp cải thiện chất lượng hình ảnh trong bất cứ điều kiện nào, đặc biệt là trong điều kiện ánh sáng yếu.\r\nNgoài ra còn có một tính năng AI mới gọi là AI HDR, giúp điều chỉnh ánh sáng trên tấm ảnh dựa trên nguồn sáng từ đó đem lại cho người dùng những bức ảnh chất lượng hơn.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.', 'product_images/RJI0XpqRzpXf6sBwL4A3dYpOGDXzY0vlzugAIooI.jpg', 1, '2024-03-09 14:53:13', '2024-03-09 14:53:13', NULL, NULL, NULL),
 (11, 2, 'Huawei Nova 8I', 9200000, 99, 'Huawei P30 là chiếc smartphone cao cấp vừa được Huawei giới thiệu với thiết kế tuyệt đẹp, hiệu năng mạnh mẽ và thiết lập camera ấn tượng.\r\nCamera siêu ấn tượng\r\nĐiện thoại dòng P của Huawei luôn cho ra mắt những công nghệ camera mới và P30 cũng không ngoại lệ.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.SuperSpectrum là tên của Huawei cho bộ lọc màu RYYB, loại bỏ các yếu tố màu xanh lá cây khỏi bộ lọc RGGB và thay thế chúng bằng màu vàng.\r\nHuawei nói rằng việc chuyển từ màu xanh lục sang màu vàng sẽ giúp cảm biến hấp thụ nhiều ánh sáng hơn.Màu vàng cũng hấp thụ thêm ánh sáng xanh lá và đỏ, giúp cải thiện chất lượng hình ảnh trong bất cứ điều kiện nào, đặc biệt là trong điều kiện ánh sáng yếu.\r\nNgoài ra còn có một tính năng AI mới gọi là AI HDR, giúp điều chỉnh ánh sáng trên tấm ảnh dựa trên nguồn sáng từ đó đem lại cho người dùng những bức ảnh chất lượng hơn.Huawei P30 có 3 camera trên mặt lưng bao gồm ống kính chính SuperSpectrum 40 MP, khẩu độ f / 1.8 + ống kính góc cực rộng 16 MP + ống kính tele 8 MP với khả năng zoom quang 3X và khẩu độ f / 2.4.', 'product_images/fmMbn2tOaxytB7q9dkhuHfzMya6pd3L7183RdBGz.jpg', 1, '2024-03-09 14:53:44', '2024-03-09 14:53:44', NULL, NULL, NULL),
 (12, 3, 'Samsung galaxy s24 grey', 25000000, 90, 'Thông tin sản phẩm\r\nTrong sự kiện Unpacked 2024 diễn ra vào ngày 18/01, Samsung đã chính thức ra mắt chiếc điện thoại Samsung Galaxy S24. Sản phẩm này mang đến nhiều cải tiến độc đáo, bao gồm việc sử dụng chip mới của Samsung, tích hợp nhiều tính năng thông minh sử dụng trí tuệ nhân tạo và cải thiện đáng kể hiệu suất chụp ảnh từ hệ thống camera.\r\nThiết kế vuông hơn, thời thượng hơn\r\nVề phần thiết kế, Samsung vẫn tiếp tục sử dụng kiểu dáng vuông vức và cách bố trí cụm camera quen thuộc so với Samsung Galaxy S23. Đáng khen là hãng có ghi nhận những góp ý từ đời trước nên cũng đã tối ưu nhẹ ở một vài điểm như: Các góc làm vuông hơn, viền màn hình mỏng hơn và cuối cùng là dải loa được làm theo dạng rảnh.Galaxy S24 có phần khung được làm từ chất liệu nhôm kết hợp cùng mặt lưng kính cường lực. Mình cảm giác máy cực kỳ chắc chắn, cảm giác cầm máy cũng khá là chặt tay. Bởi năm nay cả mặt lưng và khung viền đều được làm nhám, khác với Galaxy S23 có khung viền làm theo kiểu bóng.Cụm camera ở mặt sau vẫn giữ nguyên với cấu trúc 3 camera xếp dọc, không có sự thay đổi đáng kể về bố trí. Có lẽ Samsung vẫn đang cố gắng duy trì sự tối giản về thiết kế trong những sản phẩm của mình, điều mà hãng hướng tới khi người dùng đang có xu hướng yêu thích những thứ không có quá nhiều hoạ tiết, sự đơn giản.', 'product_images/ZllM8Hb9CKaBZifcbHPLpdnlINPFwwnAEfZdFkLR.jpg', 1, '2024-03-09 14:55:05', '2024-03-09 14:55:05', NULL, NULL, NULL),
-(13, 3, 'Samsung galaxy s24 Plus violet', 28000000, 90, 'Thông tin sản phẩm\r\nTrong sự kiện Unpacked 2024 diễn ra vào ngày 18/01, Samsung đã chính thức ra mắt chiếc điện thoại Samsung Galaxy S24. Sản phẩm này mang đến nhiều cải tiến độc đáo, bao gồm việc sử dụng chip mới của Samsung, tích hợp nhiều tính năng thông minh sử dụng trí tuệ nhân tạo và cải thiện đáng kể hiệu suất chụp ảnh từ hệ thống camera.\r\nThiết kế vuông hơn, thời thượng hơn\r\nVề phần thiết kế, Samsung vẫn tiếp tục sử dụng kiểu dáng vuông vức và cách bố trí cụm camera quen thuộc so với Samsung Galaxy S23. Đáng khen là hãng có ghi nhận những góp ý từ đời trước nên cũng đã tối ưu nhẹ ở một vài điểm như: Các góc làm vuông hơn, viền màn hình mỏng hơn và cuối cùng là dải loa được làm theo dạng rảnh.Galaxy S24 có phần khung được làm từ chất liệu nhôm kết hợp cùng mặt lưng kính cường lực. Mình cảm giác máy cực kỳ chắc chắn, cảm giác cầm máy cũng khá là chặt tay. Bởi năm nay cả mặt lưng và khung viền đều được làm nhám, khác với Galaxy S23 có khung viền làm theo kiểu bóng.Cụm camera ở mặt sau vẫn giữ nguyên với cấu trúc 3 camera xếp dọc, không có sự thay đổi đáng kể về bố trí. Có lẽ Samsung vẫn đang cố gắng duy trì sự tối giản về thiết kế trong những sản phẩm của mình, điều mà hãng hướng tới khi người dùng đang có xu hướng yêu thích những thứ không có quá nhiều hoạ tiết, sự đơn giản.', 'product_images/AkzXaD4vbktjuSk7jGXioL0Juw2Di3L67wFi1R2Z.jpg', 0, '2024-03-09 14:55:32', '2024-03-09 14:55:32', NULL, NULL, NULL),
+(13, 3, 'Samsung galaxy s24 Plus violet', 28000000, 90, 'Thông tin sản phẩm\r\nTrong sự kiện Unpacked 2024 diễn ra vào ngày 18/01, Samsung đã chính thức ra mắt chiếc điện thoại Samsung Galaxy S24. Sản phẩm này mang đến nhiều cải tiến độc đáo, bao gồm việc sử dụng chip mới của Samsung, tích hợp nhiều tính năng thông minh sử dụng trí tuệ nhân tạo và cải thiện đáng kể hiệu suất chụp ảnh từ hệ thống camera.\r\nThiết kế vuông hơn, thời thượng hơn\r\nVề phần thiết kế, Samsung vẫn tiếp tục sử dụng kiểu dáng vuông vức và cách bố trí cụm camera quen thuộc so với Samsung Galaxy S23. Đáng khen là hãng có ghi nhận những góp ý từ đời trước nên cũng đã tối ưu nhẹ ở một vài điểm như: Các góc làm vuông hơn, viền màn hình mỏng hơn và cuối cùng là dải loa được làm theo dạng rảnh.Galaxy S24 có phần khung được làm từ chất liệu nhôm kết hợp cùng mặt lưng kính cường lực. Mình cảm giác máy cực kỳ chắc chắn, cảm giác cầm máy cũng khá là chặt tay. Bởi năm nay cả mặt lưng và khung viền đều được làm nhám, khác với Galaxy S23 có khung viền làm theo kiểu bóng.Cụm camera ở mặt sau vẫn giữ nguyên với cấu trúc 3 camera xếp dọc, không có sự thay đổi đáng kể về bố trí. Có lẽ Samsung vẫn đang cố gắng duy trì sự tối giản về thiết kế trong những sản phẩm của mình, điều mà hãng hướng tới khi người dùng đang có xu hướng yêu thích những thứ không có quá nhiều hoạ tiết, sự đơn giản.', 'product_images/AkzXaD4vbktjuSk7jGXioL0Juw2Di3L67wFi1R2Z.jpg', 0, '2024-03-09 14:55:32', '2024-03-09 14:55:32', NULL, NULL, 18),
 (14, 3, 'Samsung galaxy s24 Ultra grey', 32000000, 266, 'Thông tin sản phẩm\r\nTrong sự kiện Unpacked 2024 diễn ra vào ngày 18/01, Samsung đã chính thức ra mắt chiếc điện thoại Samsung Galaxy S24. Sản phẩm này mang đến nhiều cải tiến độc đáo, bao gồm việc sử dụng chip mới của Samsung, tích hợp nhiều tính năng thông minh sử dụng trí tuệ nhân tạo và cải thiện đáng kể hiệu suất chụp ảnh từ hệ thống camera.\r\nThiết kế vuông hơn, thời thượng hơn\r\nVề phần thiết kế, Samsung vẫn tiếp tục sử dụng kiểu dáng vuông vức và cách bố trí cụm camera quen thuộc so với Samsung Galaxy S23. Đáng khen là hãng có ghi nhận những góp ý từ đời trước nên cũng đã tối ưu nhẹ ở một vài điểm như: Các góc làm vuông hơn, viền màn hình mỏng hơn và cuối cùng là dải loa được làm theo dạng rảnh.Galaxy S24 có phần khung được làm từ chất liệu nhôm kết hợp cùng mặt lưng kính cường lực. Mình cảm giác máy cực kỳ chắc chắn, cảm giác cầm máy cũng khá là chặt tay. Bởi năm nay cả mặt lưng và khung viền đều được làm nhám, khác với Galaxy S23 có khung viền làm theo kiểu bóng.Cụm camera ở mặt sau vẫn giữ nguyên với cấu trúc 3 camera xếp dọc, không có sự thay đổi đáng kể về bố trí. Có lẽ Samsung vẫn đang cố gắng duy trì sự tối giản về thiết kế trong những sản phẩm của mình, điều mà hãng hướng tới khi người dùng đang có xu hướng yêu thích những thứ không có quá nhiều hoạ tiết, sự đơn giản.', 'product_images/W4gfJr20aICYBEfyqZV0iQQ0B1YokodHOQdnGkZe.jpg', 1, '2024-03-09 14:56:01', '2024-03-09 14:56:01', NULL, NULL, NULL),
 (15, 3, 'Samsung galaxy z fold 5 kem', 40260000, 20, 'Thông tin sản phẩm\r\nTrong sự kiện Unpacked 2024 diễn ra vào ngày 18/01, Samsung đã chính thức ra mắt chiếc điện thoại Samsung Galaxy S24. Sản phẩm này mang đến nhiều cải tiến độc đáo, bao gồm việc sử dụng chip mới của Samsung, tích hợp nhiều tính năng thông minh sử dụng trí tuệ nhân tạo và cải thiện đáng kể hiệu suất chụp ảnh từ hệ thống camera.\r\nThiết kế vuông hơn, thời thượng hơn\r\nVề phần thiết kế, Samsung vẫn tiếp tục sử dụng kiểu dáng vuông vức và cách bố trí cụm camera quen thuộc so với Samsung Galaxy S23. Đáng khen là hãng có ghi nhận những góp ý từ đời trước nên cũng đã tối ưu nhẹ ở một vài điểm như: Các góc làm vuông hơn, viền màn hình mỏng hơn và cuối cùng là dải loa được làm theo dạng rảnh.Galaxy S24 có phần khung được làm từ chất liệu nhôm kết hợp cùng mặt lưng kính cường lực. Mình cảm giác máy cực kỳ chắc chắn, cảm giác cầm máy cũng khá là chặt tay. Bởi năm nay cả mặt lưng và khung viền đều được làm nhám, khác với Galaxy S23 có khung viền làm theo kiểu bóng.Cụm camera ở mặt sau vẫn giữ nguyên với cấu trúc 3 camera xếp dọc, không có sự thay đổi đáng kể về bố trí. Có lẽ Samsung vẫn đang cố gắng duy trì sự tối giản về thiết kế trong những sản phẩm của mình, điều mà hãng hướng tới khi người dùng đang có xu hướng yêu thích những thứ không có quá nhiều hoạ tiết, sự đơn giản.', 'product_images/pmtBWpCNxsdpT1Wjh9exUGQM3OLvvYNzgRXS3aWM.jpg', 0, '2024-03-09 14:56:35', '2024-03-09 14:56:35', NULL, NULL, NULL),
 (16, 4, 'Xiaomi redmi note 12 pro 4g den', 14250000, 258, 'Sự bùng nổ của công nghệ di động trong những năm gần đây đã mang đến cho người dùng vô số lựa chọn smartphone đa dạng. Trong phân khúc tầm trung, Xiaomi Redmi Note 13 Pro 128GB nổi lên như một ứng cử viên sáng giá với những ưu điểm vượt trội về thiết kế, hiệu năng nhờ chip Helio G99-Ultra, camera 200 MP và kết hợp sạc nhanh 67 W.\r\nThiết kế đẹp mắt và hỗ trợ chuẩn IP54\r\nĐiện thoại có vẻ ngoài hiện đại và sang trọng, với khung viền vuông vức giúp tạo điểm nhấn cho thiết kế khi mang lại cảm giác mạnh mẽ, nam tính lúc cầm nắm. Đi cùng với đó là mặt lưng và khung nhựa nhẹ được làm bóng, Redmi Note 13 Pro mang đến vẻ đẹp sang trọng, bóng bẩy, thu hút mọi ánh nhìn.Ở vị trí giao nhau giữa khung viền vuông và hai mặt trước sau, máy được làm cong nhẹ để tạo ra một cảm giác cầm nắm thoải mái và tự nhiên. Điều này giúp người dùng dễ dàng sử dụng thiết bị trong thời gian dài mà không gặp phải cảm giác mệt mỏi hay không thoải mái.Xiaomi Redmi Note 13 Pro không chỉ nổi bật với thiết kế, mà còn có sự đa dạng trong màu sắc, phù hợp với sở thích cá nhân của mỗi người dùng. Tùy chọn màu sắc gồm có xanh lá, đen và tím, giúp người dùng có thêm lựa chọn để thể hiện phong cách riêng của mình.\r\n\r\nVới viền dưới mỏng chỉ với 2.25 mm, Redmi Note 13 Pro mang lại trải nghiệm sử dụng mượt mà và còn tạo điểm nhấn cho thiết kế tổng thể của sản phẩm. Đặc biệt, việc đạt được tiêu chuẩn kháng nước và bụi IP54 cũng là điểm nhấn giúp bảo vệ thiết bị khỏi những tác động từ môi trường bên ngoài, gia tăng tuổi thọ và độ bền cho sản phẩm.Xiaomi Redmi Note 13 Pro thu hút sự chú ý như là một trung tâm giải trí di động với tích hợp loa kép đi kèm công nghệ âm thanh Dolby Atmos, từ đó mang lại trải nghiệm âm thanh sống động, chi tiết và mạnh mẽ, làm cho việc xem phim, nghe nhạc trở nên thú vị hơn bao giờ hết.', 'product_images/w8kWrLMf5L8sFQ1vjpCflkKJOHdKvW5fPbLz3xae.jpg', 1, '2024-03-09 14:58:02', '2024-03-09 14:58:02', NULL, NULL, NULL),
@@ -455,17 +455,17 @@ INSERT INTO `products` (`product_id`, `cat_id`, `product_name`, `price`, `quanti
 --
 
 CREATE TABLE `product_reviews` (
-  `product_review_id` bigint NOT NULL,
-  `product_id` bigint UNSIGNED NOT NULL,
-  `email` varchar(250) COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci NOT NULL,
-  `rate` int NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `product_review_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `content` text NOT NULL,
+  `rate` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -483,16 +483,16 @@ INSERT INTO `product_reviews` (`product_review_id`, `product_id`, `email`, `cont
 --
 
 CREATE TABLE `promotions` (
-  `promotion_id` bigint UNSIGNED NOT NULL,
-  `promotion_code` varchar(250) COLLATE utf8mb4_general_ci NOT NULL,
-  `promotion_name` varchar(250) COLLATE utf8mb4_general_ci NOT NULL,
-  `value` int NOT NULL,
-  `status` tinyint NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `promotion_id` bigint(20) UNSIGNED NOT NULL,
+  `promotion_code` varchar(250) NOT NULL,
+  `promotion_name` varchar(250) NOT NULL,
+  `value` int(11) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -502,14 +502,14 @@ CREATE TABLE `promotions` (
 --
 
 CREATE TABLE `roles` (
-  `role_id` int NOT NULL,
-  `role_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `role_id` int(11) NOT NULL,
+  `role_name` varchar(50) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -518,10 +518,10 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`role_id`, `role_name`, `status`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_by`) VALUES
 (1, 'Admin', 1, '2024-09-30 02:43:32', '2024-10-01 10:13:52', NULL, 23, NULL),
-(17, 'Nhân viên 2', 1, '2024-10-01 08:05:30', '2024-10-01 09:26:08', 18, 18, NULL),
+(17, 'Nhân viên 2', 1, '2024-10-01 08:05:30', '2024-10-04 02:38:29', 18, 18, NULL),
 (18, 'Quản lý chi nhánh', 0, '2024-10-01 09:19:19', '2024-10-01 09:19:19', 18, NULL, NULL),
 (19, 'Quản lý cấp 1', 1, '2024-10-01 09:29:54', '2024-10-01 09:29:54', 18, NULL, NULL),
-(20, 'Quản lý cấp 2', 1, '2024-10-01 09:30:06', '2024-10-01 09:30:06', 18, NULL, NULL);
+(20, 'Quản lý cấp 2', 1, '2024-10-01 09:30:06', '2024-10-04 04:27:20', 18, 18, NULL);
 
 -- --------------------------------------------------------
 
@@ -530,14 +530,14 @@ INSERT INTO `roles` (`role_id`, `role_name`, `status`, `created_at`, `updated_at
 --
 
 CREATE TABLE `role_permissions` (
-  `role_id` int NOT NULL,
-  `permission_id` int NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `role_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -571,11 +571,14 @@ INSERT INTO `role_permissions` (`role_id`, `permission_id`, `status`, `created_a
 (1, 25, 1, '2024-10-01 10:13:53', '2024-10-01 10:13:53', NULL, NULL, NULL),
 (1, 26, 1, '2024-10-01 10:13:53', '2024-10-01 10:13:53', NULL, NULL, NULL),
 (1, 27, 1, '2024-10-01 10:13:53', '2024-10-01 10:13:53', NULL, NULL, NULL),
-(17, 1, 1, '2024-10-01 09:26:08', '2024-10-01 09:26:08', NULL, NULL, NULL),
-(17, 2, 1, '2024-10-01 09:26:08', '2024-10-01 09:26:08', NULL, NULL, NULL),
-(17, 4, 1, '2024-10-01 09:26:08', '2024-10-01 09:26:08', NULL, NULL, NULL),
-(17, 16, 1, '2024-10-01 09:26:08', '2024-10-01 09:26:08', NULL, NULL, NULL),
-(17, 17, 1, '2024-10-01 09:26:08', '2024-10-01 09:26:08', NULL, NULL, NULL),
+(17, 1, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
+(17, 2, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
+(17, 4, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
+(17, 8, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
+(17, 12, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
+(17, 16, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
+(17, 17, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
+(17, 19, 1, '2024-10-04 02:38:29', '2024-10-04 02:38:29', NULL, NULL, NULL),
 (18, 1, 1, '2024-10-01 09:19:19', '2024-10-01 09:19:19', NULL, NULL, NULL),
 (18, 2, 1, '2024-10-01 09:19:19', '2024-10-01 09:19:19', NULL, NULL, NULL),
 (18, 4, 1, '2024-10-01 09:19:19', '2024-10-01 09:19:19', NULL, NULL, NULL),
@@ -593,12 +596,14 @@ INSERT INTO `role_permissions` (`role_id`, `permission_id`, `status`, `created_a
 (19, 8, 1, '2024-10-01 09:29:54', '2024-10-01 09:29:54', NULL, NULL, NULL),
 (19, 26, 1, '2024-10-01 09:29:54', '2024-10-01 09:29:54', NULL, NULL, NULL),
 (19, 27, 1, '2024-10-01 09:29:54', '2024-10-01 09:29:54', NULL, NULL, NULL),
-(20, 20, 1, '2024-10-01 09:30:06', '2024-10-01 09:30:06', NULL, NULL, NULL),
-(20, 21, 1, '2024-10-01 09:30:06', '2024-10-01 09:30:06', NULL, NULL, NULL),
-(20, 23, 1, '2024-10-01 09:30:06', '2024-10-01 09:30:06', NULL, NULL, NULL),
-(20, 24, 1, '2024-10-01 09:30:07', '2024-10-01 09:30:07', NULL, NULL, NULL),
-(20, 25, 1, '2024-10-01 09:30:07', '2024-10-01 09:30:07', NULL, NULL, NULL),
-(20, 26, 1, '2024-10-01 09:30:07', '2024-10-01 09:30:07', NULL, NULL, NULL);
+(20, 1, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL),
+(20, 2, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL),
+(20, 4, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL),
+(20, 6, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL),
+(20, 20, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL),
+(20, 21, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL),
+(20, 23, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL),
+(20, 25, 1, '2024-10-04 04:27:20', '2024-10-04 04:27:20', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -607,19 +612,19 @@ INSERT INTO `role_permissions` (`role_id`, `permission_id`, `status`, `created_a
 --
 
 CREATE TABLE `users` (
-  `user_id` bigint UNSIGNED NOT NULL,
-  `fullname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `gender` tinyint(1) NOT NULL DEFAULT '1',
-  `role_id` int DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm tạo',
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Thời điểm cập nhật',
-  `created_by` int DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
-  `deleted_by` int DEFAULT NULL
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `gender` tinyint(1) NOT NULL DEFAULT 1,
+  `role_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm tạo',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Thời điểm cập nhật',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -746,85 +751,85 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `cart_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `cart_details`
 --
 ALTER TABLE `cart_details`
-  MODIFY `cart_detail_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `cart_detail_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `cat_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `cat_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `customer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `order_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `order_detail_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `order_detail_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `permission_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `permission_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `product_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `product_reviews`
 --
 ALTER TABLE `product_reviews`
-  MODIFY `product_review_id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `product_review_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `promotion_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `promotion_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
@@ -885,14 +890,14 @@ ALTER TABLE `product_reviews`
 -- Constraints for table `role_permissions`
 --
 ALTER TABLE `role_permissions`
-  ADD CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `role_permissions_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`permission_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
+  ADD CONSTRAINT `role_permissions_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`permission_id`);
 
 --
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
