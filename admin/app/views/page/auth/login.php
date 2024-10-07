@@ -15,25 +15,32 @@
                                     <!-- CSRF Token -->
                                     <label>Email</label>
                                     <div class="mb-3">
-                                        <input type="email" class="form-control" name="email" id="email" placeholder="Nhập email của bản tại đây" value="" aria-label="email" aria-describedby="email-addon">
+                                        <input type="email" class="form-control" name="email" id="email"
+                                            placeholder="Nhập email của bản tại đây" value="" aria-label="email"
+                                            aria-describedby="email-addon">
                                     </div>
                                     <label>Password</label>
                                     <div class="mb-3">
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="" aria-label="Password" aria-describedby="password-addon">
+                                        <input type="password" class="form-control" name="password" id="password"
+                                            placeholder="Password" value="" aria-label="Password"
+                                            aria-describedby="password-addon">
                                     </div>
                                     <!--  -->
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" checked="">
+                                        <input class="form-check-input" type="checkbox" name="rememberMe"
+                                            id="rememberMe" checked="">
                                         <label class="form-check-label" for="rememberMe">Ghi nhớ</label>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Đăng nhập</button>
+                                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Đăng
+                                            nhập</button>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                 <small class="text-muted">Quên mật khẩu? Thay đổi mật khẩu
-                                    <a href="/login/forgot-password" class="text-info text-gradient font-weight-bold">tại đây</a>
+                                    <a href="/login/forgot-password"
+                                        class="text-info text-gradient font-weight-bold">tại đây</a>
                                 </small>
                                 <p class="mb-4 text-sm mx-auto">
                                     Không có tài khoản?
@@ -44,7 +51,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                            <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('<?php echo SCRIPT_ROOT; ?>/assets/img/curved-images/curved6.jpg')"></div>
+                            <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                                style="background-image:url('<?php echo SCRIPT_ROOT; ?>/assets/img/curved-images/curved6.jpg')">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,8 +65,8 @@
 <script>
     const URL_GLOBAL = "http://localhost/phone-ecommerce-chat/admin"
 
-    $(document).ready(function() {
-        $('form').submit(function(e) {
+    $(document).ready(function () {
+        $('form').submit(function (e) {
             e.preventDefault();
 
             var formData = new FormData(this);
@@ -68,7 +77,7 @@
                 data: formData,
                 contentType: false,
                 processData: false,
-                success: function(res) {
+                success: function (res) {
                     console.log(res);
                     if (res.status === 200) {
                         showToast(res.message, true);
@@ -81,7 +90,7 @@
                         return;
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     showToast('Có lỗi xảy ra: ' + error, false);
                 }
             });

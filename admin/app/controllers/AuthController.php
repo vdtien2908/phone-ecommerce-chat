@@ -35,6 +35,10 @@ class AuthController extends BaseController
      */
     public function login()
     {
+        if (isset($_SESSION['auth_admin'])) {
+            header('Location: /phone-ecommerce-chat/admin/home');
+            return;
+        }
         $this->view('app', [
             'page' => 'auth/login',
             'title' => 'Đăng nhập',

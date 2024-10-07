@@ -74,13 +74,13 @@
             method: 'GET',
             dataType: 'json',
             async: false,
-            success: function(res) {
+            success: function (res) {
                 const orders = res.data;
-                productIds = orders.flatMap(order => 
+                productIds = orders.flatMap(order =>
                     order.orderDetail.map(detail => detail.product_id)
                 );
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Lỗi khi lấy lịch sử đơn hàng:', error);
             }
         });
@@ -91,11 +91,11 @@
             method: 'GET',
             dataType: 'json',
             async: false,
-            success: function(res) {
+            success: function (res) {
                 product = res.data;
                 reviews = res.reviews;
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
             }
         });
@@ -107,10 +107,10 @@
                 method: 'GET',
                 dataType: 'json',
                 async: false,
-                success: function(res) {
+                success: function (res) {
                     status = res.status;
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error('Lỗi khi lấy đánh giá người dùng:', error);
                 }
             });
@@ -139,7 +139,7 @@
                     <div class="rating">
                         <span>( ${product_reviews.length} Đánh giá )</span>
                     </div>
-                    <div class="product__details__price">${formatPrice(product.price)} <span>${formatPrice(Number(product.price )+ 450000)}</span></div>
+                    <div class="product__details__price">${formatPrice(product.price)} <span>${formatPrice(Number(product.price) + 450000)}</span></div>
                     <p>${product.description.substring(0, 250)}...</p>
                     <div class="product__details__button">
                     <div class="quantity">
@@ -180,8 +180,8 @@
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <h6>Đánh giá sản phẩm</h6>
                             <div id="product-reviews">
-                                ${product_reviews && product_reviews.length > 0 ? 
-                                    product_reviews.map(review => `
+                                ${product_reviews && product_reviews.length > 0 ?
+                product_reviews.map(review => `
                                         <div class="review-item mt-4">
                                             <div class="review-header">
                                                 <span class="review-author">${review.email.substring(0, 2) + '*'.repeat(review.email.indexOf('@') - 2) + review.email.substring(review.email.indexOf('@'))}</span>
@@ -194,12 +194,12 @@
                                             <p class="review-content">${review.content}</p>
                                         </div>
                                     `).join('')
-                                    : '<p>Chưa có đánh giá nào cho sản phẩm này.</p>'
-                                }
+                : '<p>Chưa có đánh giá nào cho sản phẩm này.</p>'
+            }
                             </div>
                             
-                            ${isProductInHistory ? 
-                                status ? `
+                            ${isProductInHistory ?
+                status ? `
                                 ` : `
                                 <!-- New Review Form -->
                                 <div class="review-form mt-4">
@@ -225,7 +225,7 @@
                                     </form>
                                 </div>
                                 `
-                            : `
+                : `
                             <div class="alert alert-info mt-4">
                                 <p>Bạn cần mua sản phẩm này để có thể đánh giá.</p>
                             </div>
@@ -269,19 +269,19 @@
             url: `${URL}/getRelatedProducts/${productId}/${catId}`,
             method: 'GET',
             dataType: 'json',
-            success: function(res) {
+            success: function (res) {
                 renderRelatedProducts(res.data);
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
             }
         });
     }
 
-   
-    
 
-    
+
+
+
 
     const renderRelatedProducts = (products) => {
         const relatedProductsContainer = document.getElementById("related_products");
@@ -336,11 +336,11 @@
         relatedProductsContainer.innerHTML = productHtml;
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         fetchProductDetail()
         fetchRelatedProducts()
 
-        $(document).on('click', '.addCartButton', function() {
+        $(document).on('click', '.addCartButton', function () {
             const quantity = $('#addCartQt').val();
             const product_id = $('#addCartPId').val();
 
@@ -352,7 +352,7 @@
                     product_id: productId,
                     quantity: quantity
                 },
-                success: function(res) {
+                success: function (res) {
                     console.log(res);
                     if (res.status === 201) {
                         showToast(res.message, true);
@@ -360,7 +360,7 @@
                         showToast(res.message, true);
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log(error);
                     showToast("Vui lòng đăng nhập trước khi thêm sản phẩm", false);
                     // window.location.href = URL + '/auth/login';
@@ -368,7 +368,7 @@
             });
         });
 
-        $('#product_detail').on('click', '.pro-qty .qtybtn', function() {
+        $('#product_detail').on('click', '.pro-qty .qtybtn', function () {
             var $button = $(this);
             var $input = $button.parent().find("input");
             var oldValue = $input.val();
@@ -385,7 +385,7 @@
         });
 
         // Add event listener for review form submission
-        $('#product_detail').on('click', '#reviewSubmit', function(e) {
+        $('#product_detail').on('click', '#reviewSubmit', function (e) {
             e.preventDefault();
             const email = $('#reviewEmail').val();
             const content = $('#reviewContent').val();
@@ -397,7 +397,7 @@
                 return;
             }
 
-            if(!email || !content || !rating){
+            if (!email || !content || !rating) {
                 showToast("Vui lòng điền đầy đủ thông tin đánh giá", false);
                 return;
             }
@@ -412,7 +412,7 @@
                     content: content,
                     rate: rating
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.status === 201) {
                         showToast("Đánh giá của bạn đã được gửi thành công", true);
                         // Refresh product reviews
@@ -424,7 +424,7 @@
                         showToast("Có lỗi xảy ra khi gửi đánh giá", false);
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error('Lỗi khi gửi đánh giá:', error);
                     showToast("Có lỗi xảy ra khi gửi đánh giá", false);
                 }
