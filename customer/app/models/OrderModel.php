@@ -111,9 +111,26 @@ class OrderModel extends BaseModel
 
     public function updateStatusCompleted($id)
     {
-        $sql = "UPDATE " . self::TableName . " SET status = 'đã giao' WHERE order_id = '{$id}'";
-        $result = $this->querySql($sql);
-        return $result;
+        // Lấy tổng số lượng quantity của order_detail và customer_id từ orderID
+        $sql_order = "SELECT o.customer_id, SUM(od.quantity) as total_quantity 
+                      FROM orders o 
+                      JOIN order_details od ON o.order_id = od.order_id 
+                      WHERE o.order_id = '{$id}'";
+        $result_order = $this->querySql($sql_order);
+        $order_info = mysqli_fetch_assoc($result_order);
+        $total_quantity = $order_info['total_quantity'];
+        $customer_id = $order_info['customer_id'];
+
+        // Cập nhật trạng thái đơn hàng
+        $sql_update_order = "UPDATE " . self::TableName . " SET status = 'đã giao' WHERE order_id = '{$id}'";
+        $result_update_order = $this->querySql($sql_update_order);
+
+        // Tính toán và cập nhật điểm cho khách hàng
+        $points_to_add = 20 * $total_quantity;
+        $sql_update_customer = "UPDATE customers SET customer_points = customer_points + {$points_to_add} WHERE customer_id = '{$customer_id}'";
+        $result_update_customer = $this->querySql($sql_update_customer);
+
+        return $result_update_order && $result_update_customer;
     }
 
     public function updateStatusCancle($id)

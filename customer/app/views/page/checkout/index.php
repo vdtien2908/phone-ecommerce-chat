@@ -23,7 +23,8 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
                         <div>
                             <span>Tên người nhận<span class="text-danger">*</span></span>
-                            <input type="text" class="form-control" placeholder="Anh(Chị) ABC" name="name_receiver" required>
+                            <input type="text" class="form-control" placeholder="Anh(Chị) ABC" name="name_receiver"
+                                required>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
@@ -35,34 +36,38 @@
                     <div class="col-lg-12 mb-3">
                         <div class="mb-3">
                             <span>Địa chỉ <span class="text-danger">*</span></span>
-                             <div class="row">
-                                 <div class="col-lg-4">
-                                     <select class="form-control" id="city" name="city" aria-label=".form-select-sm">
-                                         <option value="" selected>Chọn tỉnh thành
-                                         </option>           
-                                     </select>
-                                 </div>
-                                 <div class="col-lg-4">
-                                     <select class="form-control" id="district" name="district" aria-label=".form-select-sm">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <select class="form-control" id="city" name="city" aria-label=".form-select-sm">
+                                        <option value="" selected>Chọn tỉnh thành
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="form-control" id="district" name="district"
+                                        aria-label=".form-select-sm">
                                         <option value="" selected>Chọn quận huyện</option>
-                                     </select>
-                                 </div>            
-                                 <div class="col-lg-4">
-                                     <select class="form-control" id="ward" name="ward" aria-label=".form-select-sm">
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="form-control" id="ward" name="ward" aria-label=".form-select-sm">
                                         <option value="" selected>Chọn phường xã</option>
-                                     </select> 
-                                 </div>
-                             </div>
-                             <div class="">
-                                <textarea id="address_detail" name="address_detail" class="w-100 mt-3" rows="3"  class="form-control" placeholder="Số nhà tên đuờng"></textarea>
-                             </div>
-                              <!-- Address input start -->
-                            <input type="text" hidden class="form-control" placeholder="Tên đường, phường, xã" name="address_receiver" required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="">
+                                <textarea id="address_detail" name="address_detail" class="w-100 mt-3" rows="3"
+                                    class="form-control" placeholder="Số nhà tên đuờng"></textarea>
+                            </div>
+                            <!-- Address input start -->
+                            <input type="text" hidden class="form-control" placeholder="Tên đường, phường, xã"
+                                name="address_receiver" required>
                             <!-- Address input start -->
                         </div>
                         <div>
                             <span>Mô tả <span>(Không bắt buộc)</span></span>
-                            <textarea class="w-100" rows="3" name="notes" class="form-control" placeholder=" Nội dung mô tả"></textarea>
+                            <textarea class="w-100" rows="3" name="notes" class="form-control"
+                                placeholder=" Nội dung mô tả"></textarea>
                         </div>
                     </div>
                 </div>
@@ -101,7 +106,7 @@
                         <td>STT</td>
                         <td>Hình ảnh</td>
                         <td>Tên SP</td>
-                        <td>Số lượng</td>district
+                        <td>Số lượng</td>
                         <td>Tổng tiền</td>
                     </tr>
                 </thead>
@@ -115,51 +120,51 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script>
-	var citis = document.getElementById("city");
+    var citis = document.getElementById("city");
     var districts = document.getElementById("district");
     var wards = document.getElementById("ward");
     var Parameter = {
-    url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json", 
-    method: "GET", 
-    responseType: "application/json", 
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        method: "GET",
+        responseType: "application/json",
     };
     var promise = axios(Parameter);
     promise.then(function (result) {
-    renderCity(result.data);
+        renderCity(result.data);
     });
 
     function renderCity(data) {
-    for (const x of data) {
-        citis.options[citis.options.length] = new Option(x.Name, x.Id);
-    }
-    citis.onchange = function () {
-        district.length = 1;
-        ward.length = 1;
-        if(this.value != ""){
-        const result = data.filter(n => n.Id === this.value);
+        for (const x of data) {
+            citis.options[citis.options.length] = new Option(x.Name, x.Id);
+        }
+        citis.onchange = function () {
+            district.length = 1;
+            ward.length = 1;
+            if (this.value != "") {
+                const result = data.filter(n => n.Id === this.value);
 
-        for (const k of result[0].Districts) {
-            district.options[district.options.length] = new Option(k.Name, k.Id);
-        }
-        }
-    };
-    district.onchange = function () {
-        ward.length = 1;
-        const dataCity = data.filter((n) => n.Id === citis.value);
-        if (this.value != "") {
-        const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+                for (const k of result[0].Districts) {
+                    district.options[district.options.length] = new Option(k.Name, k.Id);
+                }
+            }
+        };
+        district.onchange = function () {
+            ward.length = 1;
+            const dataCity = data.filter((n) => n.Id === citis.value);
+            if (this.value != "") {
+                const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
 
-        for (const w of dataWards) {
-            wards.options[wards.options.length] = new Option(w.Name, w.Id);
-        }
-        }
-    };
+                for (const w of dataWards) {
+                    wards.options[wards.options.length] = new Option(w.Name, w.Id);
+                }
+            }
+        };
     }
 </script>
 <script>
     const IMAGES_PATH = "http://localhost/phone-ecommerce-chat/storages/public"
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         const cartDetailsString = localStorage.getItem("cartDetails");
         let cartDetails = [];
         let totalPriceCheckout = 0;
@@ -194,7 +199,7 @@
                 return `
                     <tr>
                         <td>
-                            ${index+1}
+                            ${index + 1}
                         </td>
                         <td>
                             <img src="${IMAGES_PATH}/${item.image}" alt="" width="50" height="50">
@@ -224,7 +229,7 @@
             return regex.test(phoneNumber);
         }
 
-        $('#submitButton').click(function(e) {
+        $('#submitButton').click(function (e) {
             e.preventDefault();
             $('.error-message').remove();
             var name = $('input[name="name_receiver"]').val().trim();
@@ -254,19 +259,19 @@
             if (city === '') {
                 $('<span class="error-message text-danger">Vui lòng chọn thành phố</span>').insertAfter('input[name="address_receiver"]');
                 error = true;
-            }else if (district === '') {
+            } else if (district === '') {
                 $('<span class="error-message text-danger">Vui chọn quận/huyện</span>').insertAfter('input[name="address_receiver"]');
                 error = true;
-            }else if(ward === '') {
+            } else if (ward === '') {
                 $('<span class="error-message text-danger">Vui lòng chọn phuờng xã</span>').insertAfter('input[name="address_receiver"]');
                 error = true;
-            }else if (address_detail === '') {
+            } else if (address_detail === '') {
                 $('<span class="error-message text-danger">Vui lòng nhập số nhà hoặc tên đuờng</span>').insertAfter('input[name="address_receiver"]');
                 error = true;
             }
-            
+
             if (!error) {
-                let address =`${address_detail}, ${ward}, ${district}, ${city}`;
+                let address = `${address_detail}, ${ward}, ${district}, ${city}`;
                 handleCheckout(name, phone, address, notes);
                 console.log('Form submitted successfully');
             }
@@ -300,7 +305,7 @@
                     total_price: totalPriceCheckout,
                     listProductDetail: filteredData
                 },
-                success: function(res) {
+                success: function (res) {
                     console.log(
                         res
                     );
@@ -311,7 +316,7 @@
                         window.location.href = "http://localhost/phone-ecommerce-chat/customer/checkout/success";
                     }
                 },
-                error: function(xhr, error) {
+                error: function (xhr, error) {
                     showToast('Error: ' + 'error', false);
                 }
             });

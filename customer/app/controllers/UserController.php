@@ -18,11 +18,16 @@ class UserController extends BaseController
             return;
         }
 
-       
+        $customer = $this->customerModel->getCustomer($_SESSION['auth']['customer_id']);
+
+
+
+
 
         $this->view('app', [
             'page' => 'profile/index',
             'title' => 'Thông tin cá nhân',
+            'customer' => $customer,
         ]);
     }
 
@@ -68,7 +73,7 @@ class UserController extends BaseController
     public function updateProfile()
     {
         try {
-            $id  = $_SESSION['auth']['customer_id'];
+            $id = $_SESSION['auth']['customer_id'];
             $existCustomer = $this->customerModel->getCustomer($id);
 
             if ($existCustomer) {

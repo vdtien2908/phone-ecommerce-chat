@@ -3,7 +3,7 @@ class OrderModel extends BaseModel
 {
     const TableName = 'orders';
 
-    public function getUserId   ()
+    public function getUserId()
     {
         return isset($_SESSION['auth_admin']['user_id']) ? $_SESSION['auth_admin']['user_id'] : 1;
     }
@@ -154,9 +154,27 @@ class OrderModel extends BaseModel
     public function updateStatusCompleted($id)
     {
         $user_id = $this->getUserId();
-        $sql = "UPDATE " . self::TableName . " SET status = 'đã giao', updated_by={$user_id} WHERE order_id = '{$id}'";
-        $result = $this->querySql($sql);
-        return $result;
+
+        // Lấy số lượng order detail và customer_id từ orderID
+        $sql_order = "SELECT o.customer_id, COUNT(od.order_detail_id) as detail_count 
+                      FROM orders o 
+                      JOIN order_details od ON o.order_id = od.order_id 
+                      WHERE o.order_id = '{$id}'";
+        $result_order = $this->querySql($sql_order);
+        $order_info = mysqli_fetch_assoc($result_order);
+        $detail_count = $order_info['detail_count'];
+        $customer_id = $order_info['customer_id'];
+
+        // Cập nhật trạng thái đơn hàng và thêm số lượng chi tiết đơn hàng
+        $sql_update_order = "UPDATE " . self::TableName . " SET status = 'đã giao', updated_by={$user_id} WHERE order_id = '{$id}'";
+        $result_update_order = $this->querySql($sql_update_order);
+
+        // Tính toán và cập nhật điểm cho khách hàng
+        $points_to_add = 20 * $detail_count;
+        $sql_update_customer = "UPDATE customers SET customer_points = customer_points + {$points_to_add} WHERE customer_id = '{$customer_id}'";
+        $result_update_customer = $this->querySql($sql_update_customer);
+
+        return $result_update_order && $result_update_customer;
     }
 
     /**
