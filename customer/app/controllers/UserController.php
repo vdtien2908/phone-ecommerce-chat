@@ -1,14 +1,25 @@
 <?php
+// Import PHPMailer classes into the global namespace 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require './vendor/PHPMailer/src/Exception.php';
+require './vendor/PHPMailer/src/PHPMailer.php';
+require './vendor/PHPMailer/src/SMTP.php';
+
 class UserController extends BaseController
 {
 
     private $orderModel;
     private $customerModel;
+    private $promotionModel;
+
 
     public function __construct()
     {
         $this->orderModel = $this->model('OrderModel');
         $this->customerModel = $this->model('CustomerModel');
+        $this->promotionModel = $this->model('PromotionModel');
     }
 
     public function profile()
@@ -114,9 +125,44 @@ class UserController extends BaseController
     {
         try {
             $existOrder = $this->orderModel->getOrder($id);
+            $email = $_SESSION['auth']['email'];
 
             if ($existOrder) {
                 $this->orderModel->updateStatusCompleted($id);
+
+                 // Handle send promotion code when pay 20.000.000tr
+                if($existOrder['total_price'] > 20000000){
+                    // Random code promotion
+                    $promotion_code = rand(000000, 999999);
+
+                    // Save promotion code from database
+                    $this->promotionModel->createPromotion([
+                        'promotion_code'=>$promotion_code, 
+                        'value'=>10,
+                    ]);
+
+                    // handle send Email
+                    $mail = new PHPMailer();
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'kongtu2x@gmail.com';
+                    $mail->Password = 'dwljfcmjigtcbymb';
+                    $mail->Port = 465;
+                    $mail->SMTPSecure = 'ssl';
+
+                    // Config header
+                    $mail->setFrom('kongtu2x@gmail.com', 'Augentern-shop');
+                    $mail->addAddress($email);
+
+                    // Config content
+                    $mail->isHTML(true);   //Set email format to HTML
+                    $mail->Subject = 'Augentern-shop: Promition';
+                    $mail->Body    = "Chúng tôi tặng bạn mã giảm giá khi mua trên 20.000.000đ: 
+                    <b>${promotion_code}</b>";
+
+                    $mail->send();
+                }
 
                 $result = [
                     'status' => 200,

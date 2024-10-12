@@ -13,9 +13,10 @@ class CheckoutController extends BaseController
         $this->orderModel = $this->model('OrderModel');
         $this->productModel = $this->model('ProductModel');
         $this->orderDetailModel = $this->model('OrderDetailModel');
+        $this->promotionModel = $this->model('PromotionModel');
     }
 
-    public  function index()
+    public function index()
     {
         if (!isset($_SESSION['auth'])) {
             header('Location: /phone-ecommerce-chat/customer/auth/login');
@@ -73,6 +74,10 @@ class CheckoutController extends BaseController
             $totalPrice = $_POST['total_price'];
             $customerId = $_SESSION['auth']['customer_id'];
             $listProductDetail = $_POST['listProductDetail'];
+            $email = $_SESSION['auth']['email'];
+  
+
+          
 
             $dataOrder = [
                 'customer_id' => $customerId,
@@ -83,18 +88,18 @@ class CheckoutController extends BaseController
                 'total_price' => $totalPrice,
             ];
 
+              // Handle order when has promotion
+              if(isset($_POST['promotion_code'])){
+                $promotion_code = $_POST['promotion_code'];
+                $promotion = $this->promotionModel->getPromotionByCode($promotion_code);
+                $dataOrder['promotion_id'] = $promotion['promotion_id'];
+                $dataOrder['total_price'] = $totalPrice - ($totalPrice * ($promotion['value'] / 100));
+              }
+
             $this->orderModel->createOrder($dataOrder);
 
             $order = $this->orderModel->getLastestOrder();
             foreach ($listProductDetail as $item) {
-
-                // $dataDetail = [
-                //     'order_id' => $order['order_id'],
-                //     'product_id' => $item['product_id'],
-                //     'quantity' => $item['cartQuantity'],
-                //     'price' => $item['price']
-                // ];
-
                 $this->orderDetailModel->createOrderDetail($order['order_id'], $item['product_id'], $item['cartQuantity'], $item['price']);
 
                 $this->cartDetailModel->destroyCart($item['cart_detail_id']);
