@@ -6,6 +6,8 @@ class CheckoutController extends BaseController
     private $orderModel;
     private $orderDetailModel;
     private $productModel;
+    private $promotionModel;
+
 
     public function __construct()
     {
@@ -64,6 +66,20 @@ class CheckoutController extends BaseController
         }
     }
 
+    public function getPromotionByCode(){
+        $promotion_code = $_POST['promotion_code'];
+        $promotion = $this->promotionModel->getPromotionByCode($promotion_code);
+
+        $result = [
+            'status' => 200,
+            'message' => "Lấy mã giảm giá thành công!",
+            'data' => $promotion
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+
     public function store()
     {
         try {
@@ -89,11 +105,10 @@ class CheckoutController extends BaseController
             ];
 
               // Handle order when has promotion
-              if(isset($_POST['promotion_code'])){
-                $promotion_code = $_POST['promotion_code'];
-                $promotion = $this->promotionModel->getPromotionByCode($promotion_code);
-                $dataOrder['promotion_id'] = $promotion['promotion_id'];
-                $dataOrder['total_price'] = $totalPrice - ($totalPrice * ($promotion['value'] / 100));
+              if(isset($_POST['promotion_id'])){
+                $promotion_id = $_POST['promotion_id'];
+                $dataOrder['promotion_id'] = $promotion_id;
+                $this->promotionModel->updatePromotion($promotion_id);
               }
 
             $this->orderModel->createOrder($dataOrder);

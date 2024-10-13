@@ -70,6 +70,18 @@ class UsersController extends BaseController
                 return;
             }
 
+            $user = $this->userModel->findEmail($email);
+            if($user){
+                $result = [
+                    'status' => 500,
+                    'message' => 'Email đã tồn tại',
+                ];
+
+                header('Content-Type: application/json');
+                echo json_encode($result);
+                return;
+            } 
+
            
             $data = [
                 'fullname' => $fullname,

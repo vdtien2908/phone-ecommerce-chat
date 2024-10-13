@@ -13,4 +13,10 @@ class PromotionModel extends BaseModel
         $result = $this->querySql($sql);
         return mysqli_fetch_assoc($result);
     }
+
+    public function updatePromotion($id){
+        $sql = "UPDATE " . self::TableName . " SET 	promotion_used = 1 WHERE promotion_id = '{$id}'";
+        $result = $this->querySql($sql);
+        return $result;
+    }
 }

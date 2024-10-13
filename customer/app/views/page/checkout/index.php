@@ -85,13 +85,31 @@
                     </div>
                     <span id="productCheckout"></span>
                     <hr>
+                    <div class="">
+                        <div class="checkout__order__product">
+                            <ul>
+                                <li>
+                                    <span class="top__text">Mã giảm giá:</span>
+                                    <span class="top__text__right" id="promotion">Không có</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row mt-2">
+                            <input id="promotion_add" type="text" class="form-control col-lg-10" placeholder="Mã giảm giá" name="promotion_add">
+                            <button class="btn btn-primary col-lg-2" id="promotion_submit">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </div>
+                    </div>
                     <div class="checkout__order__total">
                         <ul>
                             <!-- <li>Tổng phụ <span id="subtotalPrice"></span></li> -->
                             <li>Tổng tiền <span id="totalPrice"></span></li>
                             <!-- hidden total price -->
                             <input type="hidden" name="totalPrice" value="{{$totalPrice}}">
+                            <input type="hidden" name="promotion_id" id="promotion_id">
                         </ul>
+                        
                     </div>
                     <button type="button" id="submitButton" class="site-btn w-100">Đặt hàng</button>
                 </div>
@@ -164,6 +182,7 @@
 <script>
     const IMAGES_PATH = "http://localhost/phone-ecommerce-chat/storages/public"
 
+   
     $(document).ready(function () {
         const cartDetailsString = localStorage.getItem("cartDetails");
         let cartDetails = [];
@@ -228,6 +247,47 @@
             var regex = /^\d{10}$/;
             return regex.test(phoneNumber);
         }
+
+        $("#promotion_submit").click(function(e){
+            const promotion_code = $('#promotion_add').val();
+
+            if(!promotion_code){
+                return showToast('Vui lòng nhập mã giảm giá', false);
+            }
+
+            $.ajax({
+                url: `http://localhost/phone-ecommerce-chat/customer/checkout/getPromotionByCode`,
+                type: 'POST',
+                data: {
+                    promotion_code
+                },
+                success: function (res) {
+                    if(!res.data){
+                        return showToast('Mã giảm giá không đúng hoặc đã được sử dụng', true);
+                    }
+
+                    $('#promotion').text(`Giảm ${res.data.value}% - Mã: ${res.data.promotion_code}`)
+                    $('#promotion_add').val('')
+                    $('#promotion_id').val(res.data.promotion_id)
+
+                    // Handle add promotion with total price
+                    totalPriceCheckout = totalPriceCheckout - (totalPriceCheckout*parseInt(res.data.value))/100;
+                    let total_price_promotion = Number(totalPriceCheckout).toLocaleString('vi-VN') + ' VND';
+                    $('#totalPrice').text(total_price_promotion)
+
+                    
+
+                    if (res.status === 200) {
+                        showToast('Áp mã giảm giá thành công', true);
+                    }
+                },
+                error: function (xhr, error) {
+                    showToast('Error: ' + 'error', false);
+                }
+            });
+
+        })
+
 
         $('#submitButton').click(function (e) {
             e.preventDefault();
@@ -294,22 +354,24 @@
                 filteredData.push(filteredItem);
             });
 
+            const orderData = {
+                name_receiver: name,
+                phone_receiver: phone,
+                address_receiver: address,
+                notes: notes,
+                total_price: totalPriceCheckout,
+                listProductDetail: filteredData
+            }
+
+            if($('#promotion_id').val()){
+                orderData.promotion_id = $('#promotion_id').val();
+            }
+
             $.ajax({
                 url: `http://localhost/phone-ecommerce-chat/customer/checkout/store`,
                 type: 'POST',
-                data: {
-                    name_receiver: name,
-                    phone_receiver: phone,
-                    address_receiver: address,
-                    notes: notes,
-                    total_price: totalPriceCheckout,
-                    listProductDetail: filteredData
-                },
+                data: orderData,
                 success: function (res) {
-                    console.log(
-                        res
-                    );
-
                     if (res.status === 200) {
                         showToast(res.message, true);
                         localStorage.removeItem("cartDetails")

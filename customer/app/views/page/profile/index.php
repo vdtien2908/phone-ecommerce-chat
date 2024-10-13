@@ -23,20 +23,14 @@
                 Điểm sếp hạng: <span class="badge badge-light"><?php echo $customer['customer_points'] ?> điểm</span>
             </button>
             <?php if ($customer['customer_points'] < 100) { ?>
-                <span class="badge badge-pill badge-secondary">Chưa cho sếp hạng</span>
-            <?php } ?>
-
-            <?php if ($customer['customer_points'] >= 100) { ?>
+                <span class="badge badge-pill badge-secondary">Chưa có xếp hạng</span>
+                <?php } elseif ($customer['customer_points'] < 200) { ?>
                 <span class="badge badge-pill badge-secondary">Hạng bạc</span>
+                <?php } elseif ($customer['customer_points'] < 300) { ?>
+                <span class="badge badge-pill badge-warning">Hạng vàng</span>
+                <?php } else { ?>
+                <span class="badge badge-pill badge-info">Hạng kim cương</span>
             <?php } ?>
-
-            <?php if ($customer['customer_points'] >= 200) { ?>
-                <<span class="badge badge-pill badge-warning">Hạng vàng</span>
-                <?php } ?>
-
-                <?php if ($customer['customer_points'] >= 300) { ?>
-                    <span class="badge badge-pill badge-info">Hạng kim cương</span>
-                <?php } ?>
                 <hr class="dropdown-divider">
         </div>
         <div class="row">
