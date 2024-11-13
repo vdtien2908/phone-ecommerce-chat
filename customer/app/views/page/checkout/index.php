@@ -137,10 +137,14 @@
 <!-- Checkout Section End -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<!-- Bắt đầu địa chỉ -->
 <script>
     var citis = document.getElementById("city");
     var districts = document.getElementById("district");
     var wards = document.getElementById("ward");
+    // API https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json
+    // Author: https://github.com/kenzouno1/DiaGioiHanhChinhVN
     var Parameter = {
         url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
         method: "GET",
@@ -179,6 +183,8 @@
         };
     }
 </script>
+<!-- Kết thúc địa chỉ -->
+
 <script>
     const IMAGES_PATH = "http://localhost/phone-ecommerce-chat/storages/public"
 

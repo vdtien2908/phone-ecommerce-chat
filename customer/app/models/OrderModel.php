@@ -112,7 +112,7 @@ class OrderModel extends BaseModel
     public function updateStatusCompleted($id)
     {
         // Lấy tổng số lượng quantity của order_detail và customer_id từ orderID
-        $sql_order = "SELECT o.customer_id, SUM(od.quantity) as total_quantity 
+        $sql_order = "SELECT o.customer_id, o.total_price, SUM(od.quantity) as total_quantity 
                       FROM orders o 
                       JOIN order_details od ON o.order_id = od.order_id 
                       WHERE o.order_id = '{$id}'";
@@ -120,18 +120,21 @@ class OrderModel extends BaseModel
         $order_info = mysqli_fetch_assoc($result_order);
         $total_quantity = $order_info['total_quantity'];
         $customer_id = $order_info['customer_id'];
-
+        $total_price = $order_info['total_price'];
+    
         // Cập nhật trạng thái đơn hàng
         $sql_update_order = "UPDATE " . self::TableName . " SET status = 'đã giao' WHERE order_id = '{$id}'";
         $result_update_order = $this->querySql($sql_update_order);
-
+    
         // Tính toán và cập nhật điểm cho khách hàng
-        $points_to_add = 20 * $total_quantity;
+        // Mỗi 1 triệu đồng trong tổng giá trị đơn hàng sẽ nhận được 10 điểm
+        $points_to_add = (int)($total_price / 1000000) * 10;
         $sql_update_customer = "UPDATE customers SET customer_points = customer_points + {$points_to_add} WHERE customer_id = '{$customer_id}'";
         $result_update_customer = $this->querySql($sql_update_customer);
-
+    
         return $result_update_order && $result_update_customer;
     }
+    
 
     public function updateStatusCancle($id)
     {

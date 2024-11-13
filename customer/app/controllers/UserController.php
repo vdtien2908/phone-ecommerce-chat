@@ -128,24 +128,35 @@ class UserController extends BaseController
             $email = $_SESSION['auth']['email'];
 
             if ($existOrder) {
+                $customer = $this->customerModel->getCustomer($existOrder['customer_id']);
                 $this->orderModel->updateStatusCompleted($id);
 
-                 // Handle send promotion code when pay 20.000.000tr
-                if($existOrder['total_price'] > 20000000){
+                // Handle send promotion code when pay 20.000.000tr
+                //  Thay 20.000.000 thành số khác
+                if($customer['customer_points'] > 500){
                     // Random code promotion
                     $promotion_code = rand(000000, 999999);
 
-                    // Save promotion code from database
-                    $this->promotionModel->createPromotion([
+                    $data_promotion =[
                         'promotion_code'=>$promotion_code, 
                         'value'=>10,
-                    ]);
+                    ];
+
+                    if($customer['customer_points'] > 2000){
+                        $data_promotion['value'] = 20;
+                    } elseif($customer['customer_points'] > 1000){
+                        $data_promotion['value'] = 15;
+                    }
+                    
+                    // Save promotion code from database
+                    $this->promotionModel->createPromotion($data_promotion);
 
                     // handle send Email
                     $mail = new PHPMailer();
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
+                    // sử dụng gmail SMTP của google
                     $mail->Username = 'kongtu2x@gmail.com';
                     $mail->Password = 'dwljfcmjigtcbymb';
                     $mail->Port = 465;
@@ -155,10 +166,12 @@ class UserController extends BaseController
                     $mail->setFrom('kongtu2x@gmail.com', 'Augentern-shop');
                     $mail->addAddress($email);
 
+                    $promotion_value = $data_promotion['value'];
+
                     // Config content
                     $mail->isHTML(true);   //Set email format to HTML
-                    $mail->Subject = 'Augentern-shop: Promition';
-                    $mail->Body    = "Chúng tôi tặng bạn mã giảm giá khi mua trên 20.000.000đ: 
+                    $mail->Subject = 'Augentern-shop: Voucher';
+                    $mail->Body    = "Chúng tôi tặng bạn mã giảm giá ${promotion_value}% tương đương với số điểm tích lũy mã bạn có khi mua thành công đơn hàng: 
                     <b>${promotion_code}</b>";
 
                     $mail->send();

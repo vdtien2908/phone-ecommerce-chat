@@ -70,8 +70,12 @@ class UsersController extends BaseController
                 return;
             }
 
+            // kiếm email đã tồn tại hay chưa
             $user = $this->userModel->findEmail($email);
+
+            // Nếu email đã tồn tại
             if($user){
+                // Trả về thông báo tồn tại
                 $result = [
                     'status' => 500,
                     'message' => 'Email đã tồn tại',

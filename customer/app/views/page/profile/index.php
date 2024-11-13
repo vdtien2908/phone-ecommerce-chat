@@ -22,13 +22,13 @@
             <button type="button" class="btn btn-primary">
                 Điểm sếp hạng: <span class="badge badge-light"><?php echo $customer['customer_points'] ?> điểm</span>
             </button>
-            <?php if ($customer['customer_points'] < 100) { ?>
+            <?php if ($customer['customer_points'] < 500) { ?>
                 <span class="badge badge-pill badge-secondary">Chưa có xếp hạng</span>
-                <?php } elseif ($customer['customer_points'] < 200) { ?>
+            <?php } elseif ($customer['customer_points'] < 1000) { ?>
                 <span class="badge badge-pill badge-secondary">Hạng bạc</span>
-                <?php } elseif ($customer['customer_points'] < 300) { ?>
+            <?php } elseif ($customer['customer_points'] < 2000) { ?>
                 <span class="badge badge-pill badge-warning">Hạng vàng</span>
-                <?php } else { ?>
+            <?php } else { ?>
                 <span class="badge badge-pill badge-info">Hạng kim cương</span>
             <?php } ?>
                 <hr class="dropdown-divider">
@@ -47,7 +47,7 @@
                     <span>Email<span class="text-danger">*</span></span>
                     <input class="form-control" type="text" placeholder="abc@gmail.com"
                         value="<?php echo isset($_SESSION['auth']['email']) ? $_SESSION['auth']['email'] : "" ?>"
-                        name="email" required>
+                        name="email" required readonly>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 mb-3">

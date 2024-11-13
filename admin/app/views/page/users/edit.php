@@ -29,7 +29,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="email" class="form-control-label">Email</label>
-                                    <input class="form-control" type="email" value="<?php echo $user['email'] ?>" placeholder="abc@gmail.com" id="email" name="email">
+                                    <input class="form-control" type="email" value="<?php echo $user['email'] ?>" placeholder="abc@gmail.com" id="email" name="email" readonly>
                                 </div>
                             </div>
                             <div class="col-md-6">

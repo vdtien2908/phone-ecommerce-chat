@@ -27,9 +27,6 @@
                         <table class="table align-items-center mb-0" id="categoriesTable">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        ID
-                                    </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                         Tên Quyền
                                     </th>
@@ -62,10 +59,7 @@
                 console.log(res);
                 $('#categoriesTable').DataTable({
                     data: res.data,
-                    columns: [{
-                            data: "role_id",
-                            className: "ps-4"
-                        },
+                    columns: [
                         {
                             data: "role_name",
                             render: function(data, type, row) {

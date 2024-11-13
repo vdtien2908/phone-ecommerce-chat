@@ -152,6 +152,7 @@ class AuthController extends BaseController
              */
             $data = [
                 'email' => $email,
+                // Hàm mã hóa của PHP
                 'password' => password_hash($password, PASSWORD_DEFAULT),
                 'customer_name' => $fullname
             ];
