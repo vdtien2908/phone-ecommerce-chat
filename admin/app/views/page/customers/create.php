@@ -83,6 +83,7 @@
                 success: function(res) {
                     if (res.status === 200) {
                         showToast(res.message, true);
+                        window.location.href = URL_GLOBAL;
                     } else showToast(res.message, false)
                 },
                 error: function(xhr, status, error) {

@@ -108,6 +108,7 @@
                 processData: false,
                 success: function(res) {
                     showToast(res.message, true);
+                    window.location.href = URL_GLOBAL;
                 },
                 error: function(xhr, status, error) {
                     showToast('Có lỗi xảy ra: ' + error, false);
